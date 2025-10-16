@@ -172,7 +172,7 @@ Students and contributors are welcome to **improve, expand, or fix** any of the 
 
 ---
 
-## 👩‍🏫 Instructor
+## 👩‍🏫 Designed By
 
 **Dr. I. K Nti**
 Assistant Professor, School of Information Technology
