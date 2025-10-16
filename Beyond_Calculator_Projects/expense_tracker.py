@@ -1,6 +1,6 @@
 """
 Expense Tracker (CSV)
-Author: (Your Name)    Date: 2025-10-16
+Author: (I. K. NTI)    Date: 2025-10-16
 
 Track expenses by category and save to CSV.
 Inputs → Storage → Processing → Output
