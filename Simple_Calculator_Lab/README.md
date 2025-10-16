@@ -1,6 +1,12 @@
 # Fundamentals of Information Technology
 # 🧮 In‑Class Lab: Build a Simple Calculator in Python
 
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/drisaacnti/simple-calculator-lab/HEAD)
+[![Launch Binder Directly](https://img.shields.io/badge/Launch_on_Binder-Click_to_Run-green?logo=jupyter)](https://mybinder.org/v2/gh/drisaacnti/simple-calculator-lab/HEAD?labpath=calculator.py)
+
+> 💡 **Click either badge above** to launch this lab live in your browser — no installation required.
+> You’ll get a full Python environment to test your calculator script interactively.
+
 ## 🎯 Objective
 In this lab, you’ll apply core programming concepts to build a **simple but fault‑tolerant calculator** that can handle user input gracefully.  
 You’ll demonstrate your understanding of **variables, input/output, conditional statements, functions, loops, and robust error handling**.
