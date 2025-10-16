@@ -1,4 +1,4 @@
-# 🤝 Contributing to *Fundamentals of Information Technology (Programming)*
+# 🤝 Contributing to *Fundamentals of Information Technology (Programming Module)*
 
 Thank you for your interest in contributing!
 This repository is used for **educational and collaborative programming practice** in the *School of Information Technology, University of Cincinnati*.
