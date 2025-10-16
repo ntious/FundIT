@@ -1,3 +1,4 @@
+# Fundamentals of Information Technology
 # 🧮 In‑Class Lab: Build a Simple Calculator in Python
 
 ## 🎯 Objective
@@ -117,7 +118,4 @@ simple-calculator-lab/
 
 ---
 
-## 🧰 Instructor Notes (optional, for GitHub Classroom)
-- Consider adding **starter comments** for name/date in `calculator.py`.
-- Use **Issues** for student questions.
-- Encourage students to paste their transcript (copy of terminal session) in a comment on Canvas along with the screenshot.
+## Designed by I. K. NTI 
