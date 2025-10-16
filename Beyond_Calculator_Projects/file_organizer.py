@@ -1,6 +1,6 @@
 """
 File Organizer (by extension)
-Author: (Your Name)    Date: 2025-10-16
+Author: (I. K. NTI)    Date: 2025-10-16
 
 Moves files into subfolders based on extension.
 Inputs → Storage → Processing → Output
