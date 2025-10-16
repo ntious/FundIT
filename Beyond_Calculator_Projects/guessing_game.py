@@ -1,6 +1,6 @@
 """
 Number Guessing Game
-Author: (Your Name)    Date: 2025-10-16
+Author: (I. K. NTI)    Date: 2025-10-16
 
 Random number guessing with difficulty levels.
 Inputs → Storage → Processing → Output
