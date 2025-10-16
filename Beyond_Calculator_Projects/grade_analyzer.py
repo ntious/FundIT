@@ -1,6 +1,6 @@
 """
 Grade Analyzer
-Author: (Your Name)    Date: 2025-10-16
+Author: (I. K. NTI)    Date: 2025-10-16
 
 Computes averages and letter grades. Can be extended to read/write files.
 Inputs → Storage → Processing → Output
