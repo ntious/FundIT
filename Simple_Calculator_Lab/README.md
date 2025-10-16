@@ -1,8 +1,8 @@
 # Fundamentals of Information Technology
 # 🧮 In‑Class Lab: Build a Simple Calculator in Python
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ntious/FundIT/HEAD?labpath=Simple_Calculator_Lab/calculator.py)
-[![Launch Binder Directly](https://img.shields.io/badge/Launch_on_Binder-Click_to_Run-green?logo=jupyter)](https://mybinder.org/v2/gh/ntious/FundIT/HEAD?labpath=Simple_Calculator_Lab/calculator.py)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ntious/FundIT/HEAD?labpath=Simple_Calculator_Lab)
+[![Launch Binder Directly](https://img.shields.io/badge/Launch_on_Binder-Click_to_Run-green?logo=jupyter)](https://mybinder.org/v2/gh/ntious/FundIT/HEAD?labpath=Simple_Calculator_Lab)
 
 > 💡 Click either badge above to open the **Simple Calculator Lab** live in your browser using MyBinder (no installation required).
 > You’ll get a full interactive Python environment to run and test `calculator.py` directly.
