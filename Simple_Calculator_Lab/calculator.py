@@ -1,7 +1,7 @@
 """
 In-Class Lab: Simple Calculator
-Author: (Your Name)
-Date: (YYYY-MM-DD)
+Author: I. K. NTI
+Date: 2025-10-16
 
 This program demonstrates core programming concepts by implementing
 a robust, menu-driven calculator. The code is intentionally organized
