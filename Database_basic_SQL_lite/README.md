@@ -2,9 +2,7 @@
 
 **One‑click launch (no installs):**
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/USERNAME/REPO/HEAD?labpath=IT1050_Module9_SQL_Lab.ipynb)
-
-> Replace `USERNAME/REPO` after you upload this repo to GitHub.
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ntious/FundIT/HEAD?labpath=Database_basic_SQL_lite/IT1050_Module9_SQL_Lab.ipynb)
 
 ## What this does
 - Runs **SQLite** entirely in the notebook (no servers).
