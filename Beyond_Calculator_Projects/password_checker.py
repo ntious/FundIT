@@ -1,6 +1,6 @@
 """
 Password Strength Checker
-Author: (Your Name)    Date: 2025-10-16
+Author: (I. K. NTI)    Date: 2025-10-16
 
 Validates password complexity using simple rules.
 Inputs → Storage → Processing → Output

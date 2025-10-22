@@ -1,6 +1,6 @@
 """
 Advanced Calculator (with Memory)
-Author: (Your Name)    Date: 2025-10-16
+Author: (I. K. NTI)    Date: 2025-10-16
 
 Extends the simple calculator with a memory feature (M) to reuse the last result.
 Inputs → Storage → Processing → Output

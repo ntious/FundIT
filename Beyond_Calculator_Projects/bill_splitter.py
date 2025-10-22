@@ -1,6 +1,6 @@
 """
 Bill Splitter
-Author: (Your Name)    Date: 2025-10-16
+Author: (I. K. NTI)    Date: 2025-10-16
 
 Compute per-person cost including tip and rounding.
 Inputs → Storage → Processing → Output

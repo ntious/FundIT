@@ -1,6 +1,6 @@
 """
 Palindrome Checker
-Author: (Your Name)    Date: 2025-10-16
+Author: (I. K. NTI)    Date: 2025-10-16
 
 Checks if text is a palindrome (ignores spaces/punctuation/case).
 Inputs → Storage → Processing → Output

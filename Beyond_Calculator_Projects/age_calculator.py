@@ -1,6 +1,6 @@
 """
 Age / Days-to-Birthday Calculator
-Author: (Your Name)    Date: 2025-10-16
+Author: (I. K. NTI)    Date: 2025-10-16
 
 Uses datetime for age and days-till-next-birthday.
 Inputs → Storage → Processing → Output

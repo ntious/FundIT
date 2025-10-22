@@ -1,6 +1,6 @@
 """
 Temperature Converter
-Author: (Your Name)    Date: 2025-10-16
+Author: (I. K. NTI)    Date: 2025-10-16
 
 Converts between Celsius, Fahrenheit, and Kelvin.
 Structured as: Inputs → Storage → Processing → Output

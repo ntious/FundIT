@@ -62,4 +62,4 @@ python temperature_converter.py
 
 ---
 
-© 2025-10-16 – School of Information Technology, University of Cincinnati (educational use)
+© 2025-10-16 – I. K. N (educational use)
