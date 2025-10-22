@@ -1,4 +1,4 @@
-# IT1050 Module 9 – In‑Class SQL Lab (Binder + SQLite)
+# Basic SQL Lab (Binder + SQLite)
 
 **One‑click launch (no installs):**
 
@@ -19,3 +19,5 @@
 ## Notes
 - Database file: `StudentDB_demo.db` (created automatically).
 - Each Binder session is temporary; download the `.db` file if you want to keep your work.
+## Desinged By
+- I. K. NTI for Educational Perpurse Only
