@@ -1,0 +1,4 @@
+-- lab4_subqueries.sql: Subqueries
+-- 1) List students enrolled in ALL courses.
+-- 2) List students who share a course with 'alex.rivera@example.edu'.
+-- 3) Find courses with no enrollments using NOT EXISTS.

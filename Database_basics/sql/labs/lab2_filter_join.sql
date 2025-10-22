@@ -1,0 +1,5 @@
+-- lab2_filter_join.sql: Filtering & JOINs
+-- 1) Find students whose last_name starts with 'C' (case-sensitive OK).
+-- 2) List student full names along with course_code and title (JOINs).
+-- 3) Show students who are NOT enrolled in any course (anti-join).
+-- 4) Find all enrollments for course_code 'IT1050' (filter after join).

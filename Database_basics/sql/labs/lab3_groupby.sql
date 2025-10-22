@@ -1,0 +1,4 @@
+-- lab3_groupby.sql: Aggregation
+-- 1) Count how many students are enrolled per course (course_code, count).
+-- 2) Show courses with at least 2 students (HAVING).
+-- 3) Count students by email domain (GROUP BY computed expression).

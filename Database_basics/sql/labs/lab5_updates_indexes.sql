@@ -1,0 +1,6 @@
+-- lab5_updates_indexes.sql: DML & simple indexing
+-- 1) Insert a new course ('IT2030','Relational Databases').
+-- 2) Enroll every student into 'IT2030'.
+-- 3) Update a student's email domain to '@school.edu' for all students.
+-- 4) Create an index on enrollments(student_id) and explain why it helps.
+-- 5) Delete enrollments for courses not in ('IT1050','IT2023','IT4065C','IT2030').
