@@ -76,16 +76,18 @@ Each one focuses on a specific new Python concept while reinforcing structured p
 
 | #  | Project                         | Concepts                     | Binder Link                                                                                                         |
 | -- | ------------------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| 1  | 🔢 Temperature Converter        | Functions, validation        | [Launch](https://mybinder.org/v2/gh/ntious/FundIT/HEAD?labpath=Beyond_Calculator_Projects/temperature_converter.py) |
-| 2  | 🧮 Advanced Calculator (Memory) | State management             | [Launch](https://mybinder.org/v2/gh/ntious/FundIT/HEAD?labpath=Beyond_Calculator_Projects/advanced_calculator.py)   |
-| 3  | 💰 Bill Splitter                | Arithmetic, formatted output | [Launch](https://mybinder.org/v2/gh/ntious/FundIT/HEAD?labpath=Beyond_Calculator_Projects/bill_splitter.py)         |
-| 4  | 📅 Age Calculator               | Using `datetime`             | [Launch](https://mybinder.org/v2/gh/ntious/FundIT/HEAD?labpath=Beyond_Calculator_Projects/age_calculator.py)        |
-| 5  | 🎲 Number Guessing Game         | Loops and logic              | [Launch](https://mybinder.org/v2/gh/ntious/FundIT/HEAD?labpath=Beyond_Calculator_Projects/guessing_game.py)         |
-| 6  | 🔡 Palindrome Checker           | String manipulation          | [Launch](https://mybinder.org/v2/gh/ntious/FundIT/HEAD?labpath=Beyond_Calculator_Projects/palindrome_checker.py)    |
-| 7  | 🧾 Expense Tracker              | File I/O and CSV             | [Launch](https://mybinder.org/v2/gh/ntious/FundIT/HEAD?labpath=Beyond_Calculator_Projects/expense_tracker.py)       |
-| 8  | 🔐 Password Strength Checker    | Regular expressions          | [Launch](https://mybinder.org/v2/gh/ntious/FundIT/HEAD?labpath=Beyond_Calculator_Projects/password_checker.py)      |
-| 9  | 🗂 File Organizer               | Automation and filesystem    | [Launch](https://mybinder.org/v2/gh/ntious/FundIT/HEAD?labpath=Beyond_Calculator_Projects/file_organizer.py)        |
-| 10 | 📊 Grade Analyzer               | Lists, loops, averages       | [Launch](https://mybinder.org/v2/gh/ntious/FundIT/HEAD?labpath=Beyond_Calculator_Projects/grade_analyzer.py)        |
+| 1  | 🔢 Temperature Converter        | Functions, validation        | [Launch](https://mybinder.org/v2/gh/ntious/FundIT/v1.0?labpath=Beyond_Calculator_Projects/temperature_converter.py) |
+| 2  | 🧮 Advanced Calculator (Memory) | State management             | [Launch](https://mybinder.org/v2/gh/ntious/FundIT/v1.0?labpath=Beyond_Calculator_Projects/advanced_calculator.py)   |
+| 3  | 💰 Bill Splitter                | Arithmetic, formatted output | [Launch](https://mybinder.org/v2/gh/ntious/FundIT/v1.0?labpath=Beyond_Calculator_Projects/bill_splitter.py)         |
+| 4  | 📅 Age Calculator               | Using `datetime`             | [Launch](https://mybinder.org/v2/gh/ntious/FundIT/v1.0?labpath=Beyond_Calculator_Projects/age_calculator.py)        |
+| 5  | 🎲 Number Guessing Game         | Loops and logic              | [Launch](https://mybinder.org/v2/gh/ntious/FundIT/v1.0?labpath=Beyond_Calculator_Projects/guessing_game.py)         |
+| 6  | 🔡 Palindrome Checker           | String manipulation          | [Launch](https://mybinder.org/v2/gh/ntious/FundIT/v1.0?labpath=Beyond_Calculator_Projects/palindrome_checker.py)    |
+| 7  | 🧾 Expense Tracker              | File I/O and CSV             | [Launch](https://mybinder.org/v2/gh/ntious/FundIT/v1.0?labpath=Beyond_Calculator_Projects/expense_tracker.py)       |
+| 8  | 🔐 Password Strength Checker    | Regular expressions          | [Launch](https://mybinder.org/v2/gh/ntious/FundIT/v1.0?labpath=Beyond_Calculator_Projects/password_checker.py)      |
+| 9  | 🗂 File Organizer               | Automation and filesystem    | [Launch](https://mybinder.org/v2/gh/ntious/FundIT/v1.0?labpath=Beyond_Calculator_Projects/file_organizer.py)        |
+| 10 | 📊 Grade Analyzer               | Lists, loops, averages       | [Launch](https://mybinder.org/v2/gh/ntious/FundIT/v1.0?labpath=Beyond_Calculator_Projects/grade_analyzer.py)        |
+
+
 
 ---
 
