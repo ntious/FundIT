@@ -180,7 +180,7 @@ Students and contributors are welcome to **improve, expand, or fix** any of the 
 Assistant Professor, School of Information Technology
 University of Cincinnati
 
-📧 [ntious@ucmail.uc.edu](mailto:ntious1@gmail.com)
+📧 [ntiik@ucmail.us.edu](ntiik@ucmail.us.edu)
 🌐 [Google Scholar]([https://researchdirectory.uc.edu/p/ntious](https://scholar.google.com/citations?user=eMCHVxcAAAAJ&hl=en))
 
 ---
