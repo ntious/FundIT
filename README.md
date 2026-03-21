@@ -181,7 +181,7 @@ Assistant Professor, School of Information Technology
 University of Cincinnati
 
 📧 [ntiik@ucmail.us.edu](ntiik@ucmail.us.edu)
-🌐 [Google Scholar]([https://researchdirectory.uc.edu/p/ntious](https://scholar.google.com/citations?user=eMCHVxcAAAAJ&hl=en))
+🌐 [Google Scholar](https://scholar.google.com/citations?user=eMCHVxcAAAAJ&hl=en)
 
 ---
 
