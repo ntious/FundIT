@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpoilGuard</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg: #090e1a;
+    --surface: #111827;
+    --card: #1a2436;
+    --card2: #1f2e44;
+    --border: #263048;
+    --accent: #f0b429;
+    --accent2: #f97316;
+    --green: #22c55e;
+    --red: #ef4444;
+    --blue: #3b82f6;
+    --text: #f1f5f9;
+    --text2: #94a3b8;
+    --text3: #64748b;
+    --mono: 'Space Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+    --font-scale: 1;
+    --radius: 14px;
+  }
+  .light-mode {
+    --bg: #f0f4f8;
+    --surface: #ffffff;
+    --card: #ffffff;
+    --card2: #f8fafc;
+    --border: #e2e8f0;
+    --text: #0f172a;
+    --text2: #475569;
+    --text3: #94a3b8;
+  }
+  .large-font { --font-scale: 1.18; }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #060b14;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: var(--sans);
+    font-size: calc(14px * var(--font-scale));
+  }
+
+  .phone-wrap {
+    width: 390px;
+    height: 844px;
+    background: var(--bg);
+    border-radius: 44px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 0 0 10px #1a1a2e, 0 0 0 12px #0d0d1a, 0 30px 80px rgba(0,0,0,0.8), inset 0 0 60px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    transition: background 0.3s;
+  }
+
+  /* Status bar */
+  .status-bar {
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text2);
+    flex-shrink: 0;
+    background: var(--bg);
+    transition: background 0.3s;
+  }
+  .status-time { font-weight: 700; color: var(--text); }
+  .status-icons { display: flex; gap: 6px; align-items: center; }
+
+  /* Screen system */
+  .screen {
+    display: none;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+  }
+  .screen.active { display: flex; }
+
+  /* Header */
+  .screen-header {
+    padding: 12px 20px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    background: var(--bg);
+    transition: background 0.3s;
+  }
+  .screen-header h1 {
+    font-family: var(--mono);
+    font-size: calc(17px * var(--font-scale));
+    font-weight: 700;
+    color: var(--text);
+    flex: 1;
+  }
+  .back-btn {
+    width: 32px; height: 32px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    color: var(--text2);
+    font-size: 16px;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+  .back-btn:hover { background: var(--card2); color: var(--text); }
+
+  /* Scrollable content */
+  .screen-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 16px 24px;
+    scrollbar-width: none;
+  }
+  .screen-content::-webkit-scrollbar { display: none; }
+
+  /* Bottom nav */
+  .bottom-nav {
+    height: 72px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 8px;
+    flex-shrink: 0;
+    transition: background 0.3s;
+  }
+  .nav-item {
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    cursor: pointer; padding: 8px 12px; border-radius: 12px;
+    transition: all 0.15s; flex: 1;
+  }
+  .nav-item:hover { background: var(--card); }
+  .nav-item.active { background: rgba(240,180,41,0.12); }
+  .nav-icon { font-size: 20px; }
+  .nav-label { font-size: calc(10px * var(--font-scale)); color: var(--text3); font-weight: 500; }
+  .nav-item.active .nav-label { color: var(--accent); }
+  .nav-item.active .nav-icon { filter: drop-shadow(0 0 6px var(--accent)); }
+
+  /* Cards */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 12px;
+    transition: background 0.3s, border-color 0.3s;
+  }
+  .card-title {
+    font-size: calc(11px * var(--font-scale));
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text3);
+    margin-bottom: 12px;
+    font-family: var(--mono);
+  }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 12px 20px; border-radius: 12px; font-size: calc(14px * var(--font-scale));
+    font-weight: 600; cursor: pointer; border: none; transition: all 0.15s;
+    font-family: var(--sans); width: 100%;
+  }
+  .btn-primary { background: var(--accent); color: #0f172a; }
+  .btn-primary:hover { background: #e0a520; transform: translateY(-1px); }
+  .btn-secondary { background: var(--card2); color: var(--text); border: 1px solid var(--border); }
+  .btn-secondary:hover { background: var(--card); }
+  .btn-danger { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.25); }
+  .btn-success { background: rgba(34,197,94,0.15); color: var(--green); border: 1px solid rgba(34,197,94,0.25); }
+  .btn-sm { padding: 7px 14px; font-size: calc(12px * var(--font-scale)); border-radius: 9px; width: auto; }
+
+  /* Badges */
+  .badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 3px 9px; border-radius: 20px; font-size: calc(11px * var(--font-scale)); font-weight: 600;
+  }
+  .badge-red { background: rgba(239,68,68,0.18); color: #fca5a5; border: 1px solid rgba(239,68,68,0.3); }
+  .badge-yellow { background: rgba(240,180,41,0.18); color: var(--accent); border: 1px solid rgba(240,180,41,0.3); }
+  .badge-green { background: rgba(34,197,94,0.18); color: #86efac; border: 1px solid rgba(34,197,94,0.3); }
+  .badge-blue { background: rgba(59,130,246,0.18); color: #93c5fd; border: 1px solid rgba(59,130,246,0.3); }
+
+  /* Toggle */
+  .toggle-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 0; border-bottom: 1px solid var(--border);
+  }
+  .toggle-row:last-child { border-bottom: none; }
+  .toggle-label { font-size: calc(14px * var(--font-scale)); color: var(--text); font-weight: 500; }
+  .toggle-sub { font-size: calc(11px * var(--font-scale)); color: var(--text3); margin-top: 2px; }
+  .toggle {
+    width: 44px; height: 26px; background: var(--border); border-radius: 13px;
+    position: relative; cursor: pointer; transition: background 0.25s; flex-shrink: 0;
+  }
+  .toggle.on { background: var(--accent); }
+  .toggle::after {
+    content: ''; position: absolute; top: 3px; left: 3px;
+    width: 20px; height: 20px; border-radius: 50%; background: #fff;
+    transition: transform 0.25s; box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  }
+  .toggle.on::after { transform: translateX(18px); }
+
+  /* === DASHBOARD === */
+  .dash-hero {
+    background: linear-gradient(135deg, #1a2436 0%, #1a2e1a 100%);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .dash-hero::before {
+    content: '';
+    position: absolute; top: -30px; right: -30px;
+    width: 120px; height: 120px;
+    background: radial-gradient(circle, rgba(240,180,41,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .dash-greeting { font-size: calc(13px * var(--font-scale)); color: var(--text3); margin-bottom: 4px; }
+  .dash-title { font-family: var(--mono); font-size: calc(20px * var(--font-scale)); color: var(--text); font-weight: 700; margin-bottom: 12px; }
+  .dash-title span { color: var(--accent); }
+  .dash-stats { display: flex; gap: 10px; }
+  .dash-stat {
+    flex: 1; background: rgba(0,0,0,0.25); border-radius: 10px; padding: 10px 12px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .dash-stat-val { font-family: var(--mono); font-size: calc(22px * var(--font-scale)); font-weight: 700; color: var(--text); }
+  .dash-stat-label { font-size: calc(11px * var(--font-scale)); color: var(--text3); margin-top: 2px; }
+  .dash-stat-val.red { color: var(--red); }
+  .dash-stat-val.yellow { color: var(--accent); }
+  .dash-stat-val.green { color: var(--green); }
+
+  .quick-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+  .qa-btn {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 16px 14px;
+    cursor: pointer; transition: all 0.15s; text-align: left;
+  }
+  .qa-btn:hover { background: var(--card2); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+  .qa-icon { font-size: 26px; margin-bottom: 8px; display: block; }
+  .qa-label { font-size: calc(13px * var(--font-scale)); font-weight: 600; color: var(--text); }
+  .qa-sub { font-size: calc(11px * var(--font-scale)); color: var(--text3); margin-top: 3px; }
+  .qa-btn.highlight { border-color: rgba(240,180,41,0.4); background: rgba(240,180,41,0.06); }
+  .qa-btn.highlight .qa-label { color: var(--accent); }
+
+  /* Alert strip */
+  .alert-strip {
+    background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3);
+    border-radius: 12px; padding: 12px 14px;
+    display: flex; align-items: center; gap: 10px; cursor: pointer;
+    margin-bottom: 12px; transition: background 0.15s;
+  }
+  .alert-strip:hover { background: rgba(239,68,68,0.16); }
+  .alert-strip-icon { font-size: 20px; flex-shrink: 0; }
+  .alert-strip-text { flex: 1; }
+  .alert-strip-title { font-size: calc(13px * var(--font-scale)); font-weight: 600; color: #fca5a5; }
+  .alert-strip-sub { font-size: calc(11px * var(--font-scale)); color: var(--text3); margin-top: 2px; }
+  .alert-strip-arrow { color: var(--text3); font-size: 14px; }
+
+  /* === INVENTORY ITEMS === */
+  .inv-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 0; border-bottom: 1px solid var(--border);
+  }
+  .inv-item:last-child { border-bottom: none; }
+  .inv-emoji { font-size: 28px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: var(--card2); border-radius: 12px; flex-shrink: 0; }
+  .inv-info { flex: 1; }
+  .inv-name { font-size: calc(14px * var(--font-scale)); font-weight: 600; color: var(--text); }
+  .inv-exp { font-size: calc(11px * var(--font-scale)); color: var(--text3); margin-top: 2px; }
+  .inv-actions { display: flex; gap: 6px; }
+
+  /* === SCAN SCREEN === */
+  .camera-view {
+    background: #000; border-radius: 16px; height: 240px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden; margin-bottom: 14px;
+    border: 2px solid var(--border);
+  }
+  .camera-corners::before, .camera-corners::after,
+  .camera-view-inner::before, .camera-view-inner::after {
+    content: ''; position: absolute; width: 24px; height: 24px; border-color: var(--accent); border-style: solid;
+  }
+  .camera-corners::before { top: 14px; left: 14px; border-width: 2px 0 0 2px; }
+  .camera-corners::after { top: 14px; right: 14px; border-width: 2px 2px 0 0; }
+  .camera-view-inner::before { bottom: 14px; left: 14px; border-width: 0 0 2px 2px; }
+  .camera-view-inner::after { bottom: 14px; right: 14px; border-width: 0 2px 2px 0; }
+  .camera-text { text-align: center; color: var(--text2); z-index: 1; }
+  .camera-scan-line {
+    position: absolute; left: 10%; right: 10%; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    animation: scanMove 2s ease-in-out infinite;
+    box-shadow: 0 0 8px var(--accent);
+  }
+  @keyframes scanMove {
+    0% { top: 20%; } 50% { top: 75%; } 100% { top: 20%; }
+  }
+  .scan-placeholder { font-size: 48px; margin-bottom: 8px; }
+
+  /* OCR Result items */
+  .ocr-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 11px 14px; background: var(--card2); border-radius: 10px;
+    margin-bottom: 8px; border: 1px solid var(--border);
+    cursor: pointer; transition: all 0.15s;
+  }
+  .ocr-item.selected { border-color: var(--accent); background: rgba(240,180,41,0.08); }
+  .ocr-check { width: 20px; height: 20px; border-radius: 6px; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; transition: all 0.15s; }
+  .ocr-item.selected .ocr-check { background: var(--accent); border-color: var(--accent); color: #0f172a; }
+  .ocr-name { flex: 1; font-size: calc(14px * var(--font-scale)); color: var(--text); font-weight: 500; }
+  .ocr-conf { font-size: calc(11px * var(--font-scale)); color: var(--text3); font-family: var(--mono); }
+
+  /* === ALERT ITEMS === */
+  .alert-item {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px; margin-bottom: 10px;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .alert-item:hover { border-color: rgba(239,68,68,0.4); }
+  .alert-item.urgent { border-left: 3px solid var(--red); }
+  .alert-item.warning { border-left: 3px solid var(--accent); }
+  .alert-item-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .alert-item-name { font-size: calc(15px * var(--font-scale)); font-weight: 600; color: var(--text); flex: 1; }
+  .alert-action-box { background: rgba(240,180,41,0.06); border: 1px solid rgba(240,180,41,0.2); border-radius: 8px; padding: 8px 10px; }
+  .alert-action-label { font-size: calc(11px * var(--font-scale)); color: var(--text3); margin-bottom: 2px; }
+  .alert-action-text { font-size: calc(13px * var(--font-scale)); color: var(--accent); font-weight: 600; }
+
+  /* === ANALYTICS === */
+  .analytics-hero {
+    background: linear-gradient(135deg, #1a2436, #1a1a2e);
+    border: 1px solid var(--border); border-radius: 18px; padding: 20px;
+    margin-bottom: 12px; text-align: center;
+  }
+  .analytics-hero-val { font-family: var(--mono); font-size: calc(40px * var(--font-scale)); font-weight: 700; color: var(--green); }
+  .analytics-hero-label { font-size: calc(13px * var(--font-scale)); color: var(--text3); margin-top: 4px; }
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+  .stat-cell { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 10px; text-align: center; }
+  .stat-cell-val { font-family: var(--mono); font-size: calc(22px * var(--font-scale)); font-weight: 700; color: var(--text); }
+  .stat-cell-label { font-size: calc(10px * var(--font-scale)); color: var(--text3); margin-top: 4px; }
+  .progress-container { margin: 10px 0; }
+  .progress-label { display: flex; justify-content: space-between; font-size: calc(12px * var(--font-scale)); color: var(--text2); margin-bottom: 6px; }
+  .progress-bar { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
+  .fill-green { background: linear-gradient(90deg, #22c55e, #4ade80); }
+  .fill-red { background: linear-gradient(90deg, #ef4444, #f87171); }
+  .fill-yellow { background: linear-gradient(90deg, #f0b429, #fbbf24); }
+
+  /* Toast notification */
+  .toast {
+    position: absolute; bottom: 90px; left: 16px; right: 16px;
+    background: #1e3a1e; border: 1px solid rgba(34,197,94,0.4);
+    border-radius: 12px; padding: 12px 16px;
+    display: flex; align-items: center; gap: 10px;
+    z-index: 100; transform: translateY(20px); opacity: 0;
+    transition: all 0.3s; pointer-events: none;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast-text { font-size: calc(13px * var(--font-scale)); color: #86efac; font-weight: 500; }
+
+  /* Audio indicator */
+  .audio-indicator {
+    display: none; align-items: center; gap: 6px;
+    background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.3);
+    border-radius: 8px; padding: 6px 10px; margin-top: 6px;
+    font-size: calc(12px * var(--font-scale)); color: #93c5fd;
+  }
+  .audio-indicator.show { display: flex; }
+  .audio-wave { display: flex; gap: 2px; align-items: center; }
+  .audio-bar { width: 3px; background: #93c5fd; border-radius: 2px; animation: wave 0.8s ease-in-out infinite; }
+  .audio-bar:nth-child(2) { animation-delay: 0.15s; }
+  .audio-bar:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes wave { 0%,100% { height: 4px; } 50% { height: 12px; } }
+
+  /* Recipe suggestions */
+  .recipe-card {
+    background: var(--card2); border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px; margin-bottom: 10px;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .recipe-card:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .recipe-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .recipe-emoji { font-size: 28px; }
+  .recipe-name { font-size: calc(15px * var(--font-scale)); font-weight: 600; color: var(--text); }
+  .recipe-time { font-size: calc(11px * var(--font-scale)); color: var(--text3); }
+  .recipe-ingredients { font-size: calc(12px * var(--font-scale)); color: var(--text2); }
+  .recipe-match { font-size: calc(11px * var(--font-scale)); color: var(--green); font-weight: 600; }
+
+  /* Empty state */
+  .empty-state { text-align: center; padding: 40px 20px; color: var(--text3); }
+  .empty-state-icon { font-size: 48px; margin-bottom: 12px; opacity: 0.5; }
+  .empty-state-text { font-size: calc(14px * var(--font-scale)); }
+
+  /* Detail overlay */
+  .detail-panel {
+    display: none; position: absolute; bottom: 0; left: 0; right: 0;
+    background: var(--surface); border-radius: 24px 24px 0 0;
+    border-top: 1px solid var(--border); padding: 20px;
+    z-index: 50; box-shadow: 0 -20px 60px rgba(0,0,0,0.5);
+    transition: background 0.3s;
+  }
+  .detail-panel.show { display: block; }
+  .detail-handle { width: 40px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 16px; }
+  .detail-close { float: right; background: var(--card); border: none; color: var(--text2); cursor: pointer; padding: 4px 10px; border-radius: 8px; font-size: 18px; }
+  .overlay-bg {
+    display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.6);
+    z-index: 40; border-radius: 44px;
+  }
+  .overlay-bg.show { display: block; }
+
+  /* Scanning animation */
+  .scanning-overlay {
+    display: none; position: absolute; inset: 0; background: var(--bg);
+    z-index: 60; align-items: center; justify-content: center; flex-direction: column; gap: 16px;
+    border-radius: 44px;
+  }
+  .scanning-overlay.show { display: flex; }
+  .scan-spinner { width: 64px; height: 64px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .scan-status { font-family: var(--mono); font-size: calc(13px * var(--font-scale)); color: var(--accent); }
+
+  .divider { height: 1px; background: var(--border); margin: 12px 0; }
+  .section-label { font-size: calc(11px * var(--font-scale)); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 10px; font-family: var(--mono); }
+  .mt8 { margin-top: 8px; } .mt12 { margin-top: 12px; } .mb12 { margin-bottom: 12px; }
+  .flex-row { display: flex; gap: 8px; }
+  .flex-1 { flex: 1; }
+</style>
+</head>
+<body>
+<div class="phone-wrap" id="app">
+
+  <!-- Status bar -->
+  <div class="status-bar">
+    <span class="status-time">9:41</span>
+    <span class="status-icons">
+      <span id="audio-status" style="display:none">🔊</span>
+      <span>⣿⣿⣿</span>
+      <span>▲▲▲</span>
+      <span>🔋</span>
+    </span>
+  </div>
+
+  <!-- ============ SCREEN: DASHBOARD ============ -->
+  <div class="screen active" id="screen-home">
+    <div class="screen-header" style="border-bottom:none; padding-bottom:0">
+      <h1>Spoil<span style="color:var(--accent)">Guard</span></h1>
+      <button class="btn btn-secondary btn-sm" onclick="goTo('screen-settings')" style="width:auto">⚙️</button>
+    </div>
+    <div class="screen-content">
+      <!-- Hero -->
+      <div class="dash-hero">
+        <div class="dash-greeting">Good morning 👋</div>
+        <div class="dash-title">Your <span>Fridge</span> Report</div>
+        <div class="dash-stats">
+          <div class="dash-stat">
+            <div class="dash-stat-val" id="dash-total">4</div>
+            <div class="dash-stat-label">Items</div>
+          </div>
+          <div class="dash-stat">
+            <div class="dash-stat-val yellow" id="dash-expiring">2</div>
+            <div class="dash-stat-label">Expiring</div>
+          </div>
+          <div class="dash-stat">
+            <div class="dash-stat-val green" id="dash-saved">$12</div>
+            <div class="dash-stat-label">Saved</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alert strip -->
+      <div class="alert-strip" onclick="goTo('screen-alerts')">
+        <span class="alert-strip-icon">🚨</span>
+        <div class="alert-strip-text">
+          <div class="alert-strip-title" id="alert-strip-text">2 items expire within 2 days</div>
+          <div class="alert-strip-sub">Tap to view alerts</div>
+        </div>
+        <span class="alert-strip-arrow">›</span>
+      </div>
+
+      <!-- Quick actions -->
+      <div class="section-label">Quick Actions</div>
+      <div class="quick-actions">
+        <div class="qa-btn highlight" onclick="goTo('screen-scan')">
+          <span class="qa-icon">📷</span>
+          <div class="qa-label">Scan Receipt</div>
+          <div class="qa-sub">OCR auto-detect</div>
+        </div>
+        <div class="qa-btn" onclick="goTo('screen-fridge')">
+          <span class="qa-icon">🥦</span>
+          <div class="qa-label">My Fridge</div>
+          <div class="qa-sub" id="fridge-count-label">4 items tracked</div>
+        </div>
+        <div class="qa-btn" onclick="goTo('screen-analytics')">
+          <span class="qa-icon">📊</span>
+          <div class="qa-label">Analytics</div>
+          <div class="qa-sub">Waste insights</div>
+        </div>
+        <div class="qa-btn" onclick="goTo('screen-recipes')">
+          <span class="qa-icon">🍳</span>
+          <div class="qa-label">Recipes</div>
+          <div class="qa-sub">Use what's left</div>
+        </div>
+      </div>
+
+      <!-- Recent activity -->
+      <div class="section-label">Recent Activity</div>
+      <div class="card" id="recent-activity">
+        <div id="activity-list">
+          <div class="inv-item">
+            <div class="inv-emoji">🥛</div>
+            <div class="inv-info">
+              <div class="inv-name">Milk added</div>
+              <div class="inv-exp">2 min ago • via manual entry</div>
+            </div>
+            <span class="badge badge-blue">New</span>
+          </div>
+          <div class="inv-item">
+            <div class="inv-emoji">🥚</div>
+            <div class="inv-info">
+              <div class="inv-name">Eggs — expiring soon!</div>
+              <div class="inv-exp">1 hour ago • alert triggered</div>
+            </div>
+            <span class="badge badge-red">⚠️</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-nav" id="nav-home">
+      <div class="nav-item active" onclick="goTo('screen-home')"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></div>
+      <div class="nav-item" onclick="goTo('screen-fridge')"><span class="nav-icon">❄️</span><span class="nav-label">Fridge</span></div>
+      <div class="nav-item" onclick="goTo('screen-alerts')"><span class="nav-icon">🔔</span><span class="nav-label">Alerts</span></div>
+      <div class="nav-item" onclick="goTo('screen-analytics')"><span class="nav-icon">📊</span><span class="nav-label">Stats</span></div>
+    </div>
+  </div>
+
+  <!-- ============ SCREEN: SCAN ============ -->
+  <div class="screen" id="screen-scan">
+    <div class="screen-header">
+      <button class="back-btn" onclick="goTo('screen-home')">‹</button>
+      <h1>Scan Receipt</h1>
+    </div>
+    <div class="screen-content">
+      <div class="camera-view camera-corners camera-view-inner" id="cam-view">
+        <div class="camera-scan-line" id="scan-line"></div>
+        <div class="camera-text">
+          <div class="scan-placeholder">🧾</div>
+          <div style="color:var(--text2); font-size:13px">Point at your receipt</div>
+          <div style="color:var(--text3); font-size:11px; margin-top:4px">Camera access simulated</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Scanning Tips</div>
+        <div style="color:var(--text2); font-size:calc(13px * var(--font-scale)); line-height:1.6">
+          • Ensure receipt is flat and well-lit<br>
+          • Include all itemized lines<br>
+          • Hold steady for best results
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="captureReceipt()">📷 Capture Receipt</button>
+      <button class="btn btn-secondary mt8" onclick="goTo('screen-home')">Add Manually Instead</button>
+    </div>
+  </div>
+
+  <!-- ============ SCREEN: OCR RESULTS ============ -->
+  <div class="screen" id="screen-ocr">
+    <div class="screen-header">
+      <button class="back-btn" onclick="goTo('screen-scan')">‹</button>
+      <h1>Detected Items</h1>
+      <span class="badge badge-green" style="margin-left:auto">OCR ✓</span>
+    </div>
+    <div class="screen-content">
+      <div class="card" style="background:rgba(34,197,94,0.06); border-color:rgba(34,197,94,0.25)">
+        <div style="display:flex; align-items:center; gap:8px">
+          <span style="font-size:18px">✅</span>
+          <div>
+            <div style="font-size:calc(13px * var(--font-scale)); font-weight:600; color:#86efac">Receipt scanned successfully</div>
+            <div style="font-size:calc(11px * var(--font-scale)); color:var(--text3)">4 items detected • Walmart • $24.67</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Select Items to Add</div>
+      <div id="ocr-items-list">
+        <div class="ocr-item selected" onclick="toggleOcrItem(this, 'Eggs', '🥚')">
+          <div class="ocr-check">✓</div>
+          <span style="font-size:20px">🥚</span>
+          <span class="ocr-name">Eggs (12 ct)</span>
+          <span class="ocr-conf">98%</span>
+        </div>
+        <div class="ocr-item selected" onclick="toggleOcrItem(this, 'Milk', '🥛')">
+          <div class="ocr-check">✓</div>
+          <span style="font-size:20px">🥛</span>
+          <span class="ocr-name">Milk (1 gal)</span>
+          <span class="ocr-conf">97%</span>
+        </div>
+        <div class="ocr-item selected" onclick="toggleOcrItem(this, 'Strawberries', '🍓')">
+          <div class="ocr-check">✓</div>
+          <span style="font-size:20px">🍓</span>
+          <span class="ocr-name">Strawberries</span>
+          <span class="ocr-conf">94%</span>
+        </div>
+        <div class="ocr-item selected" onclick="toggleOcrItem(this, 'Spinach', '🥬')">
+          <div class="ocr-check">✓</div>
+          <span style="font-size:20px">🥬</span>
+          <span class="ocr-name">Spinach (5oz)</span>
+          <span class="ocr-conf">96%</span>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div style="color:var(--text3); font-size:calc(12px * var(--font-scale)); margin-bottom:12px">
+        ⓘ Expiration dates estimated from product type. You can adjust in My Fridge.
+      </div>
+      <button class="btn btn-primary" onclick="confirmOcrItems()">✅ Add to My Fridge</button>
+      <button class="btn btn-secondary mt8" onclick="goTo('screen-scan')">Rescan</button>
+    </div>
+  </div>
+
+  <!-- ============ SCREEN: MY FRIDGE ============ -->
+  <div class="screen" id="screen-fridge">
+    <div class="screen-header">
+      <button class="back-btn" onclick="goTo('screen-home')">‹</button>
+      <h1>My Fridge</h1>
+      <span class="badge badge-blue" style="margin-left:auto" id="fridge-badge">4 items</span>
+    </div>
+    <div class="screen-content">
+      <div style="display:flex; gap:8px; margin-bottom:14px">
+        <button class="btn btn-secondary btn-sm flex-1" onclick="filterFridge('all')" id="filter-all" style="background:var(--card2)">All</button>
+        <button class="btn btn-secondary btn-sm flex-1" onclick="filterFridge('expiring')" id="filter-expiring">⚠️ Expiring</button>
+        <button class="btn btn-secondary btn-sm flex-1" onclick="filterFridge('ok')" id="filter-ok">✅ Fresh</button>
+      </div>
+      <div id="fridge-list"></div>
+      <div id="fridge-empty" class="empty-state" style="display:none">
+        <div class="empty-state-icon">🈳</div>
+        <div class="empty-state-text">No items in this category</div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <div class="nav-item" onclick="goTo('screen-home')"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></div>
+      <div class="nav-item active" onclick="goTo('screen-fridge')"><span class="nav-icon">❄️</span><span class="nav-label">Fridge</span></div>
+      <div class="nav-item" onclick="goTo('screen-alerts')"><span class="nav-icon">🔔</span><span class="nav-label">Alerts</span></div>
+      <div class="nav-item" onclick="goTo('screen-analytics')"><span class="nav-icon">📊</span><span class="nav-label">Stats</span></div>
+    </div>
+  </div>
+
+  <!-- ============ SCREEN: ALERTS ============ -->
+  <div class="screen" id="screen-alerts">
+    <div class="screen-header">
+      <button class="back-btn" onclick="goTo('screen-home')">‹</button>
+      <h1>Alerts</h1>
+      <span class="badge badge-red" style="margin-left:auto" id="alert-badge">2</span>
+    </div>
+    <div class="screen-content">
+      <div id="alerts-list"></div>
+      <div class="section-label mt12">Coming Up</div>
+      <div id="upcoming-list"></div>
+    </div>
+    <div class="bottom-nav">
+      <div class="nav-item" onclick="goTo('screen-home')"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></div>
+      <div class="nav-item" onclick="goTo('screen-fridge')"><span class="nav-icon">❄️</span><span class="nav-label">Fridge</span></div>
+      <div class="nav-item active" onclick="goTo('screen-alerts')"><span class="nav-icon">🔔</span><span class="nav-label">Alerts</span></div>
+      <div class="nav-item" onclick="goTo('screen-analytics')"><span class="nav-icon">📊</span><span class="nav-label">Stats</span></div>
+    </div>
+  </div>
+
+  <!-- ============ SCREEN: ANALYTICS ============ -->
+  <div class="screen" id="screen-analytics">
+    <div class="screen-header">
+      <button class="back-btn" onclick="goTo('screen-home')">‹</button>
+      <h1>Analytics</h1>
+    </div>
+    <div class="screen-content">
+      <div class="analytics-hero">
+        <div style="font-size:calc(12px * var(--font-scale)); color:var(--text3); margin-bottom:4px; font-family:var(--mono)">TOTAL SAVINGS THIS MONTH</div>
+        <div class="analytics-hero-val" id="total-savings">$12.40</div>
+        <div class="analytics-hero-label">vs. avg household waste of $31/mo</div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-cell">
+          <div class="stat-cell-val green" id="stat-consumed">8</div>
+          <div class="stat-cell-label">Consumed</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-cell-val red" id="stat-discarded">2</div>
+          <div class="stat-cell-label">Discarded</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-cell-val yellow" id="stat-tracked">4</div>
+          <div class="stat-cell-label">Tracked</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Waste Breakdown</div>
+        <div class="progress-container">
+          <div class="progress-label"><span>Consumed ✅</span><span id="pct-consumed">80%</span></div>
+          <div class="progress-bar"><div class="progress-fill fill-green" id="bar-consumed" style="width:80%"></div></div>
+        </div>
+        <div class="progress-container">
+          <div class="progress-label"><span>Discarded 🗑️</span><span id="pct-discarded">20%</span></div>
+          <div class="progress-bar"><div class="progress-fill fill-red" id="bar-discarded" style="width:20%"></div></div>
+        </div>
+        <div class="progress-container">
+          <div class="progress-label"><span>Still Fresh ❄️</span><span id="pct-fresh">100%</span></div>
+          <div class="progress-bar"><div class="progress-fill fill-yellow" id="bar-fresh" style="width:100%"></div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Waste Cost</div>
+        <div style="display:flex; justify-content:space-between; align-items:center">
+          <div>
+            <div style="font-size:calc(28px * var(--font-scale)); font-weight:700; color:var(--red); font-family:var(--mono)" id="waste-cost">$4.20</div>
+            <div style="font-size:calc(12px * var(--font-scale)); color:var(--text3)">Lost to waste this month</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:calc(13px * var(--font-scale)); color:var(--green); font-weight:600">↓ 34%</div>
+            <div style="font-size:calc(11px * var(--font-scale)); color:var(--text3)">vs last month</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Monthly Trend</div>
+        <div style="display:flex; align-items:flex-end; gap:8px; height:70px; padding-top:8px">
+          <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px">
+            <div style="flex:1; width:100%; background:rgba(239,68,68,0.5); border-radius:4px 4px 0 0; min-height:30px; align-self:flex-end; height:65%"></div>
+            <div style="font-size:9px; color:var(--text3)">Jan</div>
+          </div>
+          <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px">
+            <div style="flex:1; width:100%; background:rgba(239,68,68,0.5); border-radius:4px 4px 0 0; align-self:flex-end; height:50%"></div>
+            <div style="font-size:9px; color:var(--text3)">Feb</div>
+          </div>
+          <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px">
+            <div style="flex:1; width:100%; background:rgba(240,180,41,0.5); border-radius:4px 4px 0 0; align-self:flex-end; height:35%"></div>
+            <div style="font-size:9px; color:var(--text3); font-weight:700; color:var(--accent)">Mar</div>
+          </div>
+        </div>
+        <div style="font-size:calc(11px * var(--font-scale)); color:var(--text3); text-align:center; margin-top:6px">
+          Waste cost trending down 📉
+        </div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <div class="nav-item" onclick="goTo('screen-home')"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></div>
+      <div class="nav-item" onclick="goTo('screen-fridge')"><span class="nav-icon">❄️</span><span class="nav-label">Fridge</span></div>
+      <div class="nav-item" onclick="goTo('screen-alerts')"><span class="nav-icon">🔔</span><span class="nav-label">Alerts</span></div>
+      <div class="nav-item active" onclick="goTo('screen-analytics')"><span class="nav-icon">📊</span><span class="nav-label">Stats</span></div>
+    </div>
+  </div>
+
+  <!-- ============ SCREEN: RECIPES ============ -->
+  <div class="screen" id="screen-recipes">
+    <div class="screen-header">
+      <button class="back-btn" onclick="goTo('screen-home')">‹</button>
+      <h1>Recipe Suggestions</h1>
+    </div>
+    <div class="screen-content">
+      <div class="card" style="background:rgba(240,180,41,0.06); border-color:rgba(240,180,41,0.25); margin-bottom:14px">
+        <div style="font-size:calc(13px * var(--font-scale)); color:var(--accent)">
+          💡 Based on items expiring soon — use these up first!
+        </div>
+      </div>
+      <div class="recipe-card">
+        <div class="recipe-header">
+          <span class="recipe-emoji">🥗</span>
+          <div>
+            <div class="recipe-name">Spinach &amp; Egg Scramble</div>
+            <div class="recipe-time">⏱ 10 min • Easy</div>
+          </div>
+        </div>
+        <div class="recipe-ingredients">Uses: <strong style="color:var(--text)">Spinach, Eggs</strong></div>
+        <div class="recipe-match mt8">✅ Uses 2 expiring items</div>
+      </div>
+      <div class="recipe-card">
+        <div class="recipe-header">
+          <span class="recipe-emoji">🥞</span>
+          <div>
+            <div class="recipe-name">Milk &amp; Egg Pancakes</div>
+            <div class="recipe-time">⏱ 20 min • Easy</div>
+          </div>
+        </div>
+        <div class="recipe-ingredients">Uses: <strong style="color:var(--text)">Eggs, Milk</strong></div>
+        <div class="recipe-match mt8">✅ Uses 2 expiring items</div>
+      </div>
+      <div class="recipe-card">
+        <div class="recipe-header">
+          <span class="recipe-emoji">🥤</span>
+          <div>
+            <div class="recipe-name">Green Smoothie</div>
+            <div class="recipe-time">⏱ 5 min • Very Easy</div>
+          </div>
+        </div>
+        <div class="recipe-ingredients">Uses: <strong style="color:var(--text)">Spinach, Yogurt</strong></div>
+        <div class="recipe-match mt8" style="color:var(--accent)">⚡ Fastest to prepare</div>
+      </div>
+      <div class="recipe-card">
+        <div class="recipe-header">
+          <span class="recipe-emoji">🍳</span>
+          <div>
+            <div class="recipe-name">Eggs Florentine</div>
+            <div class="recipe-time">⏱ 25 min • Medium</div>
+          </div>
+        </div>
+        <div class="recipe-ingredients">Uses: <strong style="color:var(--text)">Eggs, Spinach, Milk</strong></div>
+        <div class="recipe-match mt8">✅ Uses 3 expiring items</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SCREEN: SETTINGS ============ -->
+  <div class="screen" id="screen-settings">
+    <div class="screen-header">
+      <button class="back-btn" onclick="goTo('screen-home')">‹</button>
+      <h1>Settings</h1>
+    </div>
+    <div class="screen-content">
+      <div class="card">
+        <div class="card-title">Accessibility</div>
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label">High Contrast Mode</div>
+            <div class="toggle-sub">Light background for better readability</div>
+          </div>
+          <div class="toggle" id="toggle-contrast" onclick="toggleContrast()"></div>
+        </div>
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label">Large Font Mode</div>
+            <div class="toggle-sub">Increases all text size by 18%</div>
+          </div>
+          <div class="toggle" id="toggle-font" onclick="toggleFont()"></div>
+        </div>
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label">Audio Alerts</div>
+            <div class="toggle-sub">Sound notifications for expiring items</div>
+          </div>
+          <div class="toggle" id="toggle-audio" onclick="toggleAudio()"></div>
+        </div>
+        <div class="audio-indicator" id="audio-indicator">
+          <div class="audio-wave">
+            <div class="audio-bar" style="height:4px"></div>
+            <div class="audio-bar" style="height:8px"></div>
+            <div class="audio-bar" style="height:4px"></div>
+          </div>
+          Audio alerts enabled — playing on new warnings
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Notifications</div>
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label">Expiry Reminders</div>
+            <div class="toggle-sub">Daily check at 8:00 AM</div>
+          </div>
+          <div class="toggle on" id="toggle-remind" onclick="this.classList.toggle('on')"></div>
+        </div>
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label">Weekly Report</div>
+            <div class="toggle-sub">Savings summary every Sunday</div>
+          </div>
+          <div class="toggle on" id="toggle-weekly" onclick="this.classList.toggle('on')"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">About</div>
+        <div style="color:var(--text2); font-size:calc(13px * var(--font-scale)); line-height:1.7">
+          <div style="display:flex; justify-content:space-between"><span>Version</span><span style="color:var(--text); font-family:var(--mono)">1.0.0</span></div>
+          <div class="divider"></div>
+          <div style="display:flex; justify-content:space-between"><span>Storage used</span><span style="color:var(--text); font-family:var(--mono)">128 KB</span></div>
+          <div class="divider"></div>
+          <div style="display:flex; justify-content:space-between"><span>Items tracked</span><span style="color:var(--text); font-family:var(--mono)" id="settings-count">4</span></div>
+        </div>
+      </div>
+
+      <button class="btn btn-danger mt8">🗑️ Clear All Data</button>
+    </div>
+  </div>
+
+  <!-- Scanning overlay -->
+  <div class="scanning-overlay" id="scanning-overlay">
+    <div class="scan-spinner"></div>
+    <div class="scan-status" id="scan-status-text">Analyzing receipt...</div>
+    <div style="color:var(--text3); font-size:12px">Please wait</div>
+  </div>
+
+  <!-- Overlay background -->
+  <div class="overlay-bg" id="overlay-bg" onclick="closeDetail()"></div>
+
+  <!-- Detail panel -->
+  <div class="detail-panel" id="detail-panel">
+    <div class="detail-handle"></div>
+    <button class="detail-close" onclick="closeDetail()">×</button>
+    <div id="detail-content"></div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <span>✅</span>
+    <span class="toast-text" id="toast-text">Done!</span>
+  </div>
+</div>
+
+<script>
+// ============ STATE ============
+const state = {
+  inventory: [
+    { id: 1, name: 'Eggs',     emoji: '🥚', daysLeft: 1, category: 'Dairy/Eggs', price: 3.49 },
+    { id: 2, name: 'Milk',     emoji: '🥛', daysLeft: 2, category: 'Dairy',      price: 2.99 },
+    { id: 3, name: 'Spinach',  emoji: '🥬', daysLeft: 3, category: 'Produce',    price: 2.49 },
+    { id: 4, name: 'Yogurt',   emoji: '🍦', daysLeft: 6, category: 'Dairy',      price: 1.79 },
+  ],
+  consumed: 8,
+  discarded: 2,
+  wasteCost: 4.20,
+  savedCost: 12.40,
+  nextId: 5,
+  currentFilter: 'all',
+  audioOn: false,
+};
+
+// ============ NAVIGATION ============
+function goTo(screenId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(screenId).classList.add('active');
+  if (screenId === 'screen-fridge') renderFridge();
+  if (screenId === 'screen-alerts') renderAlerts();
+  if (screenId === 'screen-analytics') updateAnalytics();
+  if (screenId === 'screen-home') updateDashboard();
+}
+
+// ============ SCAN / OCR ============
+let ocrSelected = {};
+function captureReceipt() {
+  const overlay = document.getElementById('scanning-overlay');
+  overlay.classList.add('show');
+  const msgs = ['Analyzing receipt...', 'Detecting items...', 'Reading expiry info...', 'Finalizing results...'];
+  let i = 0;
+  const interval = setInterval(() => {
+    document.getElementById('scan-status-text').textContent = msgs[i % msgs.length];
+    i++;
+  }, 600);
+  setTimeout(() => {
+    clearInterval(interval);
+    overlay.classList.remove('show');
+    // reset OCR selections
+    ocrSelected = { 'Eggs': true, 'Milk': true, 'Strawberries': true, 'Spinach': true };
+    document.querySelectorAll('.ocr-item').forEach(el => el.classList.add('selected'));
+    document.querySelectorAll('.ocr-check').forEach(el => el.textContent = '✓');
+    goTo('screen-ocr');
+  }, 2400);
+}
+
+function toggleOcrItem(el, name) {
+  el.classList.toggle('selected');
+  const check = el.querySelector('.ocr-check');
+  if (el.classList.contains('selected')) {
+    ocrSelected[name] = true;
+    check.textContent = '✓';
+  } else {
+    delete ocrSelected[name];
+    check.textContent = '';
+  }
+}
+
+function confirmOcrItems() {
+  const emojiMap = { Eggs: '🥚', Milk: '🥛', Strawberries: '🍓', Spinach: '🥬' };
+  const daysMap  = { Eggs: 1, Milk: 2, Strawberries: 4, Spinach: 3 };
+  const priceMap = { Eggs: 3.49, Milk: 2.99, Strawberries: 4.99, Spinach: 2.49 };
+  let added = 0;
+  Object.keys(ocrSelected).forEach(name => {
+    const exists = state.inventory.find(i => i.name === name);
+    if (!exists) {
+      state.inventory.push({ id: state.nextId++, name, emoji: emojiMap[name] || '🛒', daysLeft: daysMap[name] || 5, category: 'Grocery', price: priceMap[name] || 2.99 });
+      added++;
+    }
+  });
+  showToast(added > 0 ? `${Object.keys(ocrSelected).length} items added to fridge!` : 'Items already in fridge');
+  goTo('screen-fridge');
+}
+
+// ============ FRIDGE ============
+function renderFridge(filter) {
+  filter = filter || state.currentFilter;
+  state.currentFilter = filter;
+  const list = document.getElementById('fridge-list');
+  const empty = document.getElementById('fridge-empty');
+  const badge = document.getElementById('fridge-badge');
+
+  let items = state.inventory;
+  if (filter === 'expiring') items = items.filter(i => i.daysLeft <= 2);
+  if (filter === 'ok')       items = items.filter(i => i.daysLeft > 2);
+
+  badge.textContent = state.inventory.length + ' items';
+  document.getElementById('fridge-count-label').textContent = state.inventory.length + ' items tracked';
+
+  if (items.length === 0) { list.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+
+  list.innerHTML = items.map(item => {
+    const badge = item.daysLeft <= 1 ? `<span class="badge badge-red">⚠️ ${item.daysLeft}d left</span>` :
+                  item.daysLeft <= 2 ? `<span class="badge badge-yellow">⏰ ${item.daysLeft}d left</span>` :
+                                       `<span class="badge badge-green">✅ ${item.daysLeft}d left</span>`;
+    return `<div class="card" style="padding:12px; cursor:pointer" onclick="showItemDetail(${item.id})">
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:10px">
+        <div class="inv-emoji">${item.emoji}</div>
+        <div class="inv-info">
+          <div class="inv-name">${item.name}</div>
+          <div class="inv-exp">${item.category} • $${item.price.toFixed(2)}</div>
+        </div>
+        ${badge}
+      </div>
+      <div style="display:flex; gap:8px">
+        <button class="btn btn-success btn-sm flex-1" onclick="event.stopPropagation(); consumeItem(${item.id})">✅ Consumed</button>
+        <button class="btn btn-danger btn-sm flex-1" onclick="event.stopPropagation(); discardItem(${item.id})">🗑️ Discard</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filterFridge(f) {
+  ['all','expiring','ok'].forEach(k => {
+    const el = document.getElementById('filter-' + k);
+    el.style.background = k === f ? 'var(--accent)' : '';
+    el.style.color = k === f ? '#0f172a' : '';
+    el.style.borderColor = k === f ? 'var(--accent)' : '';
+  });
+  renderFridge(f);
+}
+
+function consumeItem(id) {
+  const item = state.inventory.find(i => i.id === id);
+  if (!item) return;
+  state.consumed++;
+  state.savedCost += item.price;
+  state.inventory = state.inventory.filter(i => i.id !== id);
+  showToast(`${item.emoji} ${item.name} marked as consumed! +$${item.price.toFixed(2)} saved`);
+  renderFridge();
+  updateDashboard();
+}
+
+function discardItem(id) {
+  const item = state.inventory.find(i => i.id === id);
+  if (!item) return;
+  state.discarded++;
+  state.wasteCost += item.price;
+  state.inventory = state.inventory.filter(i => i.id !== id);
+  showToast(`${item.emoji} ${item.name} discarded. 💸 $${item.price.toFixed(2)} wasted`);
+  renderFridge();
+  updateDashboard();
+}
+
+// ============ ITEM DETAIL ============
+function showItemDetail(id) {
+  const item = state.inventory.find(i => i.id === id);
+  if (!item) return;
+  const urgency = item.daysLeft <= 1 ? 'Use TODAY — don\'t wait!' : item.daysLeft <= 2 ? 'Use soon — high priority' : 'Still fresh — monitor';
+  const urgencyColor = item.daysLeft <= 1 ? 'var(--red)' : item.daysLeft <= 2 ? 'var(--accent)' : 'var(--green)';
+  document.getElementById('detail-content').innerHTML = `
+    <div style="text-align:center; margin-bottom:16px">
+      <div style="font-size:52px; margin-bottom:8px">${item.emoji}</div>
+      <div style="font-size:20px; font-weight:700; color:var(--text)">${item.name}</div>
+      <div style="font-size:13px; color:var(--text3)">${item.category} • $${item.price.toFixed(2)}</div>
+    </div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px">
+      <div style="background:var(--card2); border:1px solid var(--border); border-radius:10px; padding:12px; text-align:center">
+        <div style="font-size:24px; font-weight:700; color:${urgencyColor}; font-family:var(--mono)">${item.daysLeft}</div>
+        <div style="font-size:11px; color:var(--text3)">Days remaining</div>
+      </div>
+      <div style="background:var(--card2); border:1px solid var(--border); border-radius:10px; padding:12px; text-align:center">
+        <div style="font-size:18px; font-weight:700; color:var(--text)">$${item.price.toFixed(2)}</div>
+        <div style="font-size:11px; color:var(--text3)">Value at risk</div>
+      </div>
+    </div>
+    <div style="background:rgba(240,180,41,0.06); border:1px solid rgba(240,180,41,0.25); border-radius:10px; padding:12px; margin-bottom:14px">
+      <div style="font-size:11px; color:var(--text3); margin-bottom:4px">RECOMMENDED ACTION</div>
+      <div style="font-size:14px; color:${urgencyColor}; font-weight:600">${urgency}</div>
+    </div>
+    <div style="display:flex; gap:8px">
+      <button class="btn btn-success flex-1" onclick="consumeItem(${item.id}); closeDetail()">✅ Mark Consumed</button>
+      <button class="btn btn-danger flex-1" onclick="discardItem(${item.id}); closeDetail()">🗑️ Discard</button>
+    </div>
+  `;
+  document.getElementById('overlay-bg').classList.add('show');
+  document.getElementById('detail-panel').classList.add('show');
+}
+
+function closeDetail() {
+  document.getElementById('overlay-bg').classList.remove('show');
+  document.getElementById('detail-panel').classList.remove('show');
+}
+
+// ============ ALERTS ============
+function renderAlerts() {
+  const urgent = state.inventory.filter(i => i.daysLeft <= 2);
+  const upcoming = state.inventory.filter(i => i.daysLeft > 2);
+
+  document.getElementById('alert-badge').textContent = urgent.length;
+  document.getElementById('alert-strip-text').textContent = urgent.length + ' items expire within 2 days';
+
+  document.getElementById('alerts-list').innerHTML = urgent.length === 0
+    ? '<div class="empty-state"><div class="empty-state-icon">🎉</div><div class="empty-state-text">No urgent alerts!</div></div>'
+    : urgent.map(item => `
+      <div class="alert-item urgent" onclick="showItemDetail(${item.id}); goTo('screen-fridge')">
+        <div class="alert-item-header">
+          <span style="font-size:28px">${item.emoji}</span>
+          <div style="flex:1">
+            <div class="alert-item-name">${item.name}</div>
+            <div style="font-size:11px; color:var(--text3)">${item.category}</div>
+          </div>
+          <span class="badge ${item.daysLeft <= 1 ? 'badge-red' : 'badge-yellow'}">${item.daysLeft === 0 ? 'TODAY' : item.daysLeft + 'd left'}</span>
+        </div>
+        <div class="alert-action-box">
+          <div class="alert-action-label">Recommended Action</div>
+          <div class="alert-action-text">${item.daysLeft <= 1 ? '🔥 Use today — critical!' : '⏰ Use soon — don\'t wait'}</div>
+        </div>
+      </div>`).join('');
+
+  document.getElementById('upcoming-list').innerHTML = upcoming.length === 0
+    ? '<div style="color:var(--text3); font-size:13px; text-align:center; padding:16px">All items tracked</div>'
+    : upcoming.map(item => `
+      <div class="alert-item warning">
+        <div class="alert-item-header">
+          <span style="font-size:24px">${item.emoji}</span>
+          <div style="flex:1">
+            <div class="alert-item-name">${item.name}</div>
+            <div style="font-size:11px; color:var(--text3)">${item.category}</div>
+          </div>
+          <span class="badge badge-green">${item.daysLeft}d left</span>
+        </div>
+        <div class="alert-action-box" style="background:rgba(34,197,94,0.06); border-color:rgba(34,197,94,0.2)">
+          <div class="alert-action-label">Status</div>
+          <div class="alert-action-text" style="color:var(--green)">✅ Still fresh — monitor</div>
+        </div>
+      </div>`).join('');
+}
+
+// ============ ANALYTICS ============
+function updateAnalytics() {
+  const total = state.consumed + state.discarded;
+  const pctC = total > 0 ? Math.round(state.consumed / total * 100) : 80;
+  const pctD = total > 0 ? Math.round(state.discarded / total * 100) : 20;
+  document.getElementById('stat-consumed').textContent = state.consumed;
+  document.getElementById('stat-discarded').textContent = state.discarded;
+  document.getElementById('stat-tracked').textContent = state.inventory.length;
+  document.getElementById('total-savings').textContent = '$' + state.savedCost.toFixed(2);
+  document.getElementById('waste-cost').textContent = '$' + state.wasteCost.toFixed(2);
+  document.getElementById('pct-consumed').textContent = pctC + '%';
+  document.getElementById('pct-discarded').textContent = pctD + '%';
+  document.getElementById('bar-consumed').style.width = pctC + '%';
+  document.getElementById('bar-discarded').style.width = pctD + '%';
+  document.getElementById('bar-fresh').style.width = (state.inventory.length > 0 ? 100 : 0) + '%';
+  document.getElementById('settings-count').textContent = state.inventory.length;
+}
+
+// ============ DASHBOARD ============
+function updateDashboard() {
+  const expiring = state.inventory.filter(i => i.daysLeft <= 2).length;
+  document.getElementById('dash-total').textContent = state.inventory.length;
+  document.getElementById('dash-expiring').textContent = expiring;
+  document.getElementById('dash-saved').textContent = '$' + Math.round(state.savedCost);
+  document.getElementById('fridge-count-label').textContent = state.inventory.length + ' items tracked';
+  document.getElementById('alert-strip-text').textContent = expiring + ' items expire within 2 days';
+  document.getElementById('settings-count').textContent = state.inventory.length;
+  document.getElementById('fridge-badge').textContent = state.inventory.length + ' items';
+}
+
+// ============ SETTINGS ============
+function toggleContrast() {
+  const t = document.getElementById('toggle-contrast');
+  t.classList.toggle('on');
+  document.getElementById('app').classList.toggle('light-mode', t.classList.contains('on'));
+}
+
+function toggleFont() {
+  const t = document.getElementById('toggle-font');
+  t.classList.toggle('on');
+  document.getElementById('app').classList.toggle('large-font', t.classList.contains('on'));
+}
+
+function toggleAudio() {
+  const t = document.getElementById('toggle-audio');
+  t.classList.toggle('on');
+  state.audioOn = t.classList.contains('on');
+  document.getElementById('audio-indicator').classList.toggle('show', state.audioOn);
+  document.getElementById('audio-status').style.display = state.audioOn ? 'inline' : 'none';
+}
+
+// ============ TOAST ============
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  document.getElementById('toast-text').textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2800);
+}
+
+// ============ INIT ============
+renderFridge();
+renderAlerts();
+updateAnalytics();
+updateDashboard();
+</script>
+</body>
+</html>
