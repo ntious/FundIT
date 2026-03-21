@@ -150,5 +150,3 @@ If you are unsure how to apply this to your own project:
 
 We are here to help you succeed.
 ```
-
----
