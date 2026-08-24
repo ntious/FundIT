@@ -4,6 +4,12 @@ services:
     volumes:
       - .:/workspaces/db-sql-intro-lab
     command: sleep infinity
+    environment:
+      PGUSER: ${PGUSER}
+      PGPASSWORD: ${PGPASSWORD}
+      PGDATABASE: ${PGDATABASE}
+      PGHOST: postgres
+      PGPORT: 5432
     networks: [labnet]
     depends_on: [postgres, adminer]
 
@@ -15,7 +21,7 @@ services:
       POSTGRES_PASSWORD: ${PGPASSWORD}
       POSTGRES_DB: ${PGDATABASE}
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./sql:/docker-entrypoint-initdb.d
@@ -27,7 +33,7 @@ services:
     environment:
       ADMINER_DEFAULT_SERVER: postgres
     ports:
-      - "8080:8080"
+      - "127.0.0.1:8080:8080"
     networks: [labnet]
 
 volumes:

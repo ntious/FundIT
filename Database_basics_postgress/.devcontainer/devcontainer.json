@@ -5,6 +5,7 @@
   ],
   "service": "dev",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "initializeCommand": "bash Database_basics_postgress/.devcontainer/initialize.sh",
   "forwardPorts": [
     5432,
     8080
@@ -12,7 +13,13 @@
   "portsAttributes": {
     "8080": {
       "label": "Adminer (DB UI)",
-      "onAutoForward": "openBrowser"
+      "onAutoForward": "openBrowser",
+      "visibility": "private"
+    },
+    "5432": {
+      "label": "PostgreSQL (loopback only)",
+      "onAutoForward": "silent",
+      "visibility": "private"
     }
   },
   "postCreateCommand": "bash .devcontainer/postCreate.sh",

@@ -7,16 +7,20 @@
 2. Wait until you see “Setup complete.”
 3. The port forwarder will open **Adminer** automatically (port 8080). If not, open the forwarded port manually.
 
+The environment generates a unique database password in the untracked `.env`
+file before the containers start. Both database-related host ports bind to
+loopback, and Codespaces forwards them privately.
+
 ### Adminer (web UI) login
 - System: **PostgreSQL**
 - Server: **postgres**
 - Username: `labuser`
-- Password: `labpass`
+- Password: run `printf '%s\n' "$PGPASSWORD"` in the Codespace terminal
 - Database: `labdb`
 
 ### psql (terminal client)
 ```bash
-psql "postgresql://labuser:labpass@localhost:5432/labdb"
+psql -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -d "$PGDATABASE"
 ```
 
 ## What’s included
@@ -36,6 +40,7 @@ psql "postgresql://labuser:labpass@localhost:5432/labdb"
 ## Instructor notes
 - This repo is **Codespaces-ready** using devcontainers and Docker Compose.
 - Adminer is lighter and simpler than pgAdmin—ideal for freshmen.
+- Never commit `.env` or publish the generated password.
 - To reset the database, stop the Codespace and delete the `pgdata` volume in the Docker tab, or create a fresh Codespace.
 
 ---
