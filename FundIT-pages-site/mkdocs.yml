@@ -1,0 +1,59 @@
+site_name: IT1050 · Fundamentals of IT
+site_url: https://ntious.github.io/FundIT/
+site_description: Hands-on Python and SQL labs that show how computers turn input into output.
+repo_url: https://github.com/ntious/FundIT
+repo_name: Course repository
+docs_dir: .site-build/source
+site_dir: .site-build/output
+theme:
+  name: material
+  font:
+    text: Plus Jakarta Sans
+    code: JetBrains Mono
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  icon:
+    logo: material/lightning-bolt
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - content.code.copy
+    - search.suggest
+    - search.highlight
+plugins:
+  - search
+extra_css:
+  - stylesheets/course.css
+extra:
+  generator: false
+copyright: Code · MIT. I. K. Nti, School of Information Technology, University of Cincinnati.
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.highlight
+  - pymdownx.superfences
+validation:
+  nav:
+    omitted_files: info
+  links:
+    not_found: warn
+    anchors: warn
