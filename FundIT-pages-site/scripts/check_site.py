@@ -4,8 +4,9 @@ from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
-ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / '.site-build/output'
+TOOLS = Path(__file__).resolve().parents[1]
+ROOT = TOOLS.parent
+OUTPUT = TOOLS / '.site-build/output'
 PREFIX = '/FundIT/'
 
 
@@ -56,7 +57,7 @@ def check():
         relative = source.relative_to(ROOT)
         assert (OUTPUT / relative).read_bytes() == source.read_bytes(), f'Changed download: {relative}'
         if source.suffix in ('.py', '.sql'):
-            rendered = (ROOT / '.site-build/source' / relative.with_suffix('.md')).read_text()
+            rendered = (TOOLS / '.site-build/source' / relative.with_suffix('.md')).read_text()
             assert source.read_text().rstrip() in rendered, f'Changed code: {relative}'
     search = json.loads((OUTPUT / 'search/search_index.json').read_text())
     for script in ROOT.glob('Beyond_Calculator_Projects/*.py'):

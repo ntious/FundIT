@@ -2,9 +2,10 @@
 
 The website is built with MkDocs Material, in the same style as the Python Foundations course site. The lab folders, READMEs, scripts, SQL files and notebook remain the authoritative teaching materials. Do not edit generated pages.
 
-From the repository root, in a separate website virtual environment:
+From the `FundIT-pages-site` directory, in a separate website virtual environment:
 
 ```sh
+cd FundIT-pages-site
 python -m pip install -r requirements-site.txt
 python scripts/build_site.py
 mkdocs build --strict -f .site-build/mkdocs.yml

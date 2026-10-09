@@ -1,6 +1,8 @@
 
 # 💻 Fundamentals of Information Technology (Programming)
 
+**Course website:** [Browse the labs online](https://ntious.github.io/FundIT/)
+
 Welcome to the **Fundamentals of Information Technology** programming repository!
 This repo contains a section of practical hands-on Python labs used in the course to help you understand how a computer system works through **Input → Storage → Processing → Output (ISPO)**.
 
