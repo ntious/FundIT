@@ -1,10 +1,10 @@
 {
-  "name": "Freshman SQL Lab (PostgreSQL)",
+  "name": "FundIT PostgreSQL Lab",
   "dockerComposeFile": [
-    "../docker-compose.yml"
+    "../../Database_basics_postgress/docker-compose.yml"
   ],
   "service": "dev",
-  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "workspaceFolder": "/workspaces/db-sql-intro-lab",
   "initializeCommand": "bash Database_basics_postgress/.devcontainer/initialize.sh",
   "forwardPorts": [
     5432,

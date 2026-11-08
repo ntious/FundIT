@@ -26,9 +26,9 @@ DEFAULT_MAP = {
 }
 
 # ---------- INPUTS ----------
-def get_folder(prompt="Folder to organize (default=.): "):
+def get_folder(prompt="Folder to organize (default=sample_files): "):
     raw = input(prompt).strip()
-    return raw or "."
+    return raw or "sample_files"
 
 # ---------- PROCESSING ----------
 def organize(path: str, mapping=DEFAULT_MAP):
@@ -45,6 +45,12 @@ def organize(path: str, mapping=DEFAULT_MAP):
 def main():
     print("=== File Organizer ===")
     folder = get_folder()
+    confirmation = input(
+        f"Move files in '{folder}'? Type ORGANIZE to continue: "
+    ).strip()
+    if confirmation != "ORGANIZE":
+        print("Cancelled. No files were moved.")
+        return
     try:
         organize(folder)
         print("Files organized successfully.")

@@ -6,15 +6,16 @@ Track expenses by category and save to CSV.
 Inputs → Storage → Processing → Output
 """
 
-import csv, os
+import csv
 from collections import defaultdict
+from pathlib import Path
 
-FILE = "expenses.csv"
+FILE = Path(__file__).with_name("expenses.csv")
 
 # ---------- STORAGE ----------
 def load_totals():
     totals = defaultdict(float)
-    if os.path.exists(FILE):
+    if FILE.exists():
         with open(FILE, newline="", encoding="utf-8") as f:
             reader = csv.reader(f)
             for row in reader:

@@ -88,6 +88,8 @@ Use this sample as a **reference**, not a template to copy.
 ## ⚠️ Academic Integrity & Usage Policy
 
 This repository is provided for **instructional purposes only**.
+The guidance below describes expectations for assessed course submissions; it
+does not add restrictions to the repository's [MIT License](../LICENSE).
 
 ### ✅ You MAY:
 - Study the structure

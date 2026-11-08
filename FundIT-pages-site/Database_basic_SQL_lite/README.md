@@ -1,21 +1,7 @@
-# Basic SQL Lab (Binder + SQLite)
+# SQLite Lab
 
-**One‑click launch (no installs):**
-
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ntious/FundIT/HEAD?labpath=Database_basic_SQL_lite/SQL_Lab.ipynb)
-
-## What this does
-- Runs **SQLite** entirely in the notebook (no servers).
-- Uses `ipython-sql` to execute SQL directly in cells.
-- Creates tables, adds foreign keys (enforced logically), inserts data, runs queries, updates, and deletes.
-
-## How to use
-1. Click the Binder badge above after pushing this repo to GitHub and updating the link.
-2. In JupyterLab, open **SQL_Lab.ipynb**.
-3. Run cells from top to bottom. Each task prints its output, ready for screenshots.
-
-## Notes
-- Database file: `StudentDB_demo.db` (created automatically).
-- Each Binder session is temporary; download the `.db` file if you want to keep your work.
-## Desinged By
-- I. K. NTI for Educational Perpurse Only
+The canonical student instructions are in
+[`Database_basic_SQL_lite/README.md`](../../Database_basic_SQL_lite/README.md)
+at the repository root. This directory is retained for compatibility with the
+website source layout; generated website pages are built from the canonical
+lab files.

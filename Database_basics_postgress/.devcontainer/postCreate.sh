@@ -14,11 +14,10 @@ apt-get install -y postgresql-client curl
 echo "Waiting for PostgreSQL to be ready..."
 until pg_isready -h "$PGHOST" -p "$PGPORT" >/dev/null 2>&1; do sleep 1; done
 
-echo "Running idempotent seed (ok to ignore errors if objects exist)..."
-# Initial schema/data (runs again to ensure lab is ready even if init scripts were skipped by caching)
+echo "Applying idempotent schema and sample data..."
 PSQL=(psql -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -d "$PGDATABASE")
-"${PSQL[@]}" -f sql/00_init.sql || true
-"${PSQL[@]}" -f sql/01_schema.sql || true
-"${PSQL[@]}" -f sql/02_seed.sql || true
+"${PSQL[@]}" -f sql/00_init.sql
+"${PSQL[@]}" -f sql/01_schema.sql
+"${PSQL[@]}" -f sql/02_seed.sql
 
 echo "Setup complete. Open the private Adminer forward (port 8080) or use psql."

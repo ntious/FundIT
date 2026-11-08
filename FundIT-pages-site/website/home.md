@@ -11,12 +11,14 @@ hide:
 
 Every computer system follows the same four steps. In these labs you write small Python programs and SQL queries that make those steps visible, so you can see how data flows through a real system.
 
-**No installation needed.** Every lab runs in your browser. Bring your curiosity; errors are part of the lesson.
+Choose the platform listed for each activity: Python projects and the SQLite
+notebook can run in Binder, the PostgreSQL lab uses GitHub Codespaces, and the
+prototype opens in a browser. Local setup instructions are also available.
 
 [Start the calculator lab](Simple_Calculator_Lab/index.md){ .md-button .md-button--primary }
 [Browse all labs](#your-lab-path){ .md-button }
 
-<p class="course-facts">Python + SQL <span aria-hidden="true"> / </span> 4 core labs, 10 optional projects <span aria-hidden="true"> / </span> Runs in Binder or Codespaces</p>
+<p class="course-facts">Python + SQL <span aria-hidden="true"> / </span> 4 core activities, 10 optional projects <span aria-hidden="true"> / </span> Binder, Codespaces, or local setup</p>
 
 </div>
 
@@ -43,7 +45,7 @@ Every computer system follows the same four steps. In these labs you write small
 </div>
 
 !!! tip "Look for the four stages in every program"
-    Each Python file in this course is organised with `INPUTS`, `STORAGE`, `PROCESSING` and `OUTPUT` sections. Use the **Run in Binder** button on any lab page to open it in your browser, then run it from the Binder terminal with `python <file>.py`.
+    The Python exercises use `INPUTS`, `STORAGE`, `PROCESSING` and `OUTPUT` to make the ISPO model visible. A Binder link opens a temporary Jupyter environment; use its terminal to run command-line programs. Save your work before leaving.
 
 ## Your lab path
 
@@ -83,4 +85,7 @@ Ten optional mini-projects, each focused on one new idea. Pick any one; they do 
 
 [Running a lab in Binder](Simple_Calculator_Lab/index.md#how-to-run) · [Contributing a new lab](CONTRIBUTING.md) · [Security policy](SECURITY.md) · [Repository overview](repository.md)
 
-These materials are open for instructors to reuse and adapt under the [MIT License](LICENSE.md).
+For a sequenced Python introduction before these applied activities, see
+[python_foundation](https://github.com/ntious/python_foundation). These
+materials are available for instructors to reuse and adapt under the
+[MIT License](LICENSE.md).

@@ -1,11 +1,12 @@
 # Fundamentals of Information Technology
 # 🧮 In‑Class Lab: Build a Simple Calculator in Python
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ntious/FundIT/HEAD?labpath=Simple_Calculator_Lab)
-[![Launch Binder Directly](https://img.shields.io/badge/Launch_on_Binder-Click_to_Run-green?logo=jupyter)](https://mybinder.org/v2/gh/ntious/FundIT/HEAD?labpath=Simple_Calculator_Lab)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ntious/FundIT/HEAD)
 
-> 💡 Click either badge above to open the **Simple Calculator Lab** live in your browser using MyBinder (no installation required).
-> You’ll get a full interactive Python environment to run and test `calculator.py` directly.
+Binder opens a temporary Jupyter environment for this repository. To run this
+interactive command-line program there, open a Jupyter terminal and run
+`python Simple_Calculator_Lab/calculator.py`. You can also run it locally.
+Binder does not save your work after the session ends.
 
 
 ## 🎯 Objective
@@ -93,10 +94,11 @@ To reinforce systems thinking, the program is structured into the classic four s
 ## ▶️ How to Run
 1. Ensure you have **Python 3.8+** installed.
 2. Download or clone this repository.
-3. In a terminal, navigate to the folder and run:
+3. From the repository root, open a terminal and run:
    ```bash
-   python calculator.py
+   python Simple_Calculator_Lab/calculator.py
    ```
+   If you are already in this folder, run `python calculator.py`.
 
 ### ✅ Testing Checklist
 Before submitting, verify all of the following cases:
@@ -108,10 +110,11 @@ Before submitting, verify all of the following cases:
 
 ---
 
-## 📝 Submission
-- Save your file as **`calculator.py`**.
-- Take a **screenshot of your script output** (show at least: a valid operation, invalid choice, division‑by‑zero handling, and exit).
-- Upload the screenshot to Canvas as your **class attendance and participation** proof.
+## Submission evidence
+
+Follow your instructor's requirements. A useful evidence set is the source file
+and a short transcript showing a valid calculation, invalid choice,
+division-by-zero handling, and exit.
 
 ---
 
@@ -125,4 +128,4 @@ simple-calculator-lab/
 
 ---
 
-## Designed by I. K. NTI 
+## Designed by I. K. NTI

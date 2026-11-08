@@ -52,6 +52,12 @@ def rewrite_links(text, page):
         if '@' in target and '/' not in target:
             return f'[{label}](mailto:{target})'
         path, _, anchor = target.partition('#')
+        if path == 'LICENSE' or path.endswith('/LICENSE'):
+            path += '.md'
+        elif path == 'README.md':
+            path = 'index.md'
+        elif path.endswith('/README.md'):
+            path = path[:-len('README.md')] + 'index.md'
         if path.endswith('.py'):
             path = path[:-3] + '.md'
         if not (SOURCE / page.parent / path).resolve().exists() and not (ROOT / page.parent / path).exists():
@@ -218,7 +224,7 @@ def build():
     home = (TOOLS / 'website/home.md').read_text(encoding='utf-8').replace('<!-- PROJECTS -->', '\n\n'.join(cards))
     write('index.md', home)
 
-    config = yaml.safe_load((TOOLS / 'mkdocs.yml').read_text())
+    config = yaml.safe_load((TOOLS / 'mkdocs.yml').read_text(encoding='utf-8'))
     config['nav'] = [
         {'Welcome': 'index.md'},
         {'Python labs': [
@@ -246,7 +252,9 @@ def build():
     # Absolute paths keep the generated config independent of its own location.
     config['docs_dir'] = str(SOURCE)
     config['site_dir'] = str(TOOLS / '.site-build/output')
-    (TOOLS / '.site-build/mkdocs.yml').write_text(yaml.safe_dump(config, sort_keys=False, allow_unicode=True))
+    (TOOLS / '.site-build/mkdocs.yml').write_text(
+        yaml.safe_dump(config, sort_keys=False, allow_unicode=True), encoding='utf-8'
+    )
     print(f'Prepared {len(PROJECTS) + 1} Python pages, {len(SQL_LABS) + len(SQL_SETUP)} SQL pages and 1 notebook; '
           'originals unchanged.')
 

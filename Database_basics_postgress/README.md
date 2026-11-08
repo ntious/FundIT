@@ -1,47 +1,72 @@
-# Freshman Databases & SQL Lab (PostgreSQL, GitHub Codespaces)
+# PostgreSQL Basics Lab (GitHub Codespaces)
 
-**No installs required.** Students click one button and get a live PostgreSQL + a simple web UI (Adminer) in the browser.
+This lab provides a PostgreSQL database, sample tables, and Adminer, a browser
+interface for running SQL. It is separate from the SQLite notebook lab.
 
-## One‑click start
-1. On GitHub, click **Code → Create codespace on main**.
-2. Wait until you see “Setup complete.”
-3. The port forwarder will open **Adminer** automatically (port 8080). If not, open the forwarded port manually.
+## Start the lab
 
-The environment generates a unique database password in the untracked `.env`
-file before the containers start. Both database-related host ports bind to
-loopback, and Codespaces forwards them privately.
+1. On GitHub, choose **Code → Codespaces → Create codespace on main**.
+2. In the advanced creation options, select the **FundIT PostgreSQL Lab**
+   configuration (`.devcontainer/postgresql/devcontainer.json`).
+3. Wait for the container setup to finish. Adminer should open automatically
+   on the private forwarded port 8080. If it does not, open port 8080 from the
+   Ports panel.
 
-### Adminer (web UI) login
+Codespaces requires a GitHub account and may have usage or billing limits.
+Alternatively, an instructor can run the included Docker Compose environment
+locally.
+
+## Connect with Adminer
+
+Use the following values:
+
 - System: **PostgreSQL**
-- Server: **postgres**
+- Server: `postgres`
 - Username: `labuser`
-- Password: run `printf '%s\n' "$PGPASSWORD"` in the Codespace terminal
+- Password: in the Codespace terminal, run `printf '%s\n' "$PGPASSWORD"`
 - Database: `labdb`
 
-### psql (terminal client)
+The setup generates a unique password in an untracked `.env` file. Do not
+commit that file, share the password, or use real personal data in the sample
+database.
+
+To connect from the Codespace terminal:
+
 ```bash
 psql -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -d "$PGDATABASE"
 ```
 
-## What’s included
-- Pre-created tables: `students`, `courses`, `enrollments` (with sample data).
-- Beginner labs in `sql/labs/`:
-  - `lab1_select.sql` (basic SELECTs, ORDER BY)
-  - `lab2_filter_join.sql` (WHERE, AND/OR, INNER JOIN)
-  - `lab3_groupby.sql` (GROUP BY, aggregates, HAVING)
-  - `lab4_subqueries.sql` (subqueries, IN/EXISTS)
-  - `lab5_updates_indexes.sql` (INSERT, UPDATE, DELETE, simple indexes)
+## Activities
 
-## How to run a lab
-1. Open a lab file under `sql/labs/`.
-2. Copy a task query and run it in Adminer (SQL tab) or in `psql`.
-3. Optional: save your solutions to a new file like `lab1_answers_<yourname>.sql` and commit.
+The database is initialized with the `students`, `courses`, and `enrollments`
+tables and synthetic sample rows. Start with files in `sql/labs/`:
 
-## Instructor notes
-- This repo is **Codespaces-ready** using devcontainers and Docker Compose.
-- Adminer is lighter and simpler than pgAdmin—ideal for freshmen.
-- Never commit `.env` or publish the generated password.
-- To reset the database, stop the Codespace and delete the `pgdata` volume in the Docker tab, or create a fresh Codespace.
+- `lab1_select.sql`: SELECT and ORDER BY
+- `lab2_filter_join.sql`: WHERE, AND/OR, and INNER JOIN
+- `lab3_groupby.sql`: GROUP BY, aggregates, and HAVING
+- `lab4_subqueries.sql`: subqueries, IN, and EXISTS
+- `lab5_updates_indexes.sql`: INSERT, UPDATE, DELETE, and simple indexes
 
----
-**Copyright:** MIT
+Open a lab file, run its task query in Adminer's SQL tab or in `psql`, then
+compare the result with the task. Save your answers separately if your
+instructor asks for submission evidence.
+
+## Local setup
+
+Install Docker Compose, then run the initialize script from the repository
+root to create a unique local password and start the database environment:
+
+```bash
+bash Database_basics_postgress/.devcontainer/initialize.sh
+docker compose -f Database_basics_postgress/docker-compose.yml up -d
+```
+
+The Compose file binds the host database and Adminer ports to loopback. Keep the
+generated `.env` private. To stop the environment without removing its data:
+
+```bash
+docker compose -f Database_basics_postgress/docker-compose.yml down
+```
+
+To remove the database volume as well, use `down -v`; this permanently deletes
+the lab database data.
