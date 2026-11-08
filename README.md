@@ -187,6 +187,14 @@ University of Cincinnati
 
 ---
 
+## Cite this repository
+
+For this archived release, cite FundIT v1.0.0: [10.5281/zenodo.24046742](https://doi.org/10.5281/zenodo.24046742). The project DOI, which points to the latest version, is [10.5281/zenodo.24046741](https://doi.org/10.5281/zenodo.24046741).
+
+[GitHub release v1.0.0](https://github.com/ntious/FundIT/releases/tag/v1.0.0).
+
+---
+
 ## 📝 License
 
 This repository is intended for **educational use**.
