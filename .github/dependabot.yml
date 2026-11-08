@@ -1,7 +1,7 @@
 version: 2
 updates:
   - package-ecosystem: "pip"
-    directory: "/Database_basic_SQL_lite/.binder"
+    directory: "/.binder"
     schedule:
       interval: "weekly"
       day: "monday"

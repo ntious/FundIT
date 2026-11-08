@@ -1,136 +1,66 @@
-# 🤝 Contributing to *Fundamentals of Information Technology (Programming Module)*
+# Contributing to FundIT
 
 Thank you for your interest in contributing!
-This repository is used for **educational and collaborative programming practice** in the *School of Information Technology, University of Cincinnati*.
-Students are encouraged to submit improvements, fixes, and new exercises following the guidelines below.
+FundIT contains adaptable programming and database activities for a broader
+Fundamentals of Information Technology context. Contributions that improve
+correctness, learning clarity, accessibility, or instructor reuse are welcome.
 
----
+## Contribution principles
 
-## 🧠 Contribution Philosophy
+- Keep activities beginner-friendly and aligned with the Input → Storage →
+  Processing → Output (ISPO) model where applicable.
+- State prerequisites, platform requirements, expected results, and what
+  learners should submit or save.
+- Prefer standard-library code for small Python exercises. Include automated
+  tests for reusable logic and use temporary files/directories for tests that
+  read or write data.
+- Keep examples safe: use synthetic data, never ask learners to enter real
+  passwords, and tell learners when a script changes files.
+- Preserve existing paths and Binder/Codespaces links unless a change includes
+  a migration plan.
 
-All code in this repository should:
+## Pull request workflow
 
-* Be **educational** — designed to teach or demonstrate a programming concept.
-* Follow the **ISPO model** — Inputs → Storage → Processing → Output.
-* Be **readable, modular, and well-documented**.
+1. Fork and clone the repository:
 
----
+   ```bash
+   git clone https://github.com/YOUR-USERNAME/FundIT.git
+   cd FundIT
+   ```
 
-## 🧩 How to Contribute
+2. Create a focused branch:
 
-### 1️⃣ Fork and Clone
+   ```bash
+   git checkout -b fix-sqlite-lab-instructions
+   ```
 
-Fork this repository to your GitHub account and clone it locally:
+3. Make the change and run the relevant checks:
 
-```bash
-git clone https://github.com/YOUR-USERNAME/FundIT.git
-cd FundIT
-```
+   ```bash
+   python -m unittest discover -s tests -v
+   python -m compileall -q Simple_Calculator_Lab Beyond_Calculator_Projects
+   ```
 
-### 2️⃣ Create a New Branch
+   For documentation or launch changes, also verify affected links and test
+   the launch path when possible. Do not claim a clean Binder or Codespaces
+   launch unless it was tested.
 
-Give your branch a clear name:
+4. Commit, push your branch, and open a pull request. Include a short summary,
+   tests performed, and any platform or migration notes.
 
-```bash
-git checkout -b feature-add-new-lab
-```
+## Python exercise conventions
 
-### 3️⃣ Make Your Changes
+- Use clear names and small functions for logic that can be tested independently.
+- Use a `main()` function and the `if __name__ == "__main__":` guard for
+  interactive command-line programs.
+- Comment only where the reason for an action or a non-obvious step needs
+  explanation; do not require a fixed number of comments per file.
+- Use `snake_case` for new Python filenames. Existing directory names are
+  retained to avoid breaking links.
 
-You can:
+## License
 
-* Add a new lab or mini-project (e.g., `bmi_calculator.py`)
-* Improve code comments or fix bugs
-* Add examples or new Binder links to the README
-
-> 💡 Each Python file should include a top-level docstring:
-
-```python
-"""
-Project Title: BMI Calculator
-Author: Your Name
-Date: YYYY-MM-DD
-Description: Calculates BMI and provides weight category.
-Structure: Inputs → Storage → Processing → Output
-"""
-```
-
-### 4️⃣ Test Your Code
-
-Make sure your program runs without errors:
-
-```bash
-python Beyond_Calculator_Projects/your_script.py
-```
-
-or use **Binder** to test it online.
-
-### 5️⃣ Commit and Push
-
-```bash
-git add .
-git commit -m "Added new BMI calculator mini-project"
-git push origin feature-add-new-lab
-```
-
-### 6️⃣ Submit a Pull Request
-
-Go to your fork on GitHub and open a **Pull Request (PR)** to the main repository.
-Include a short summary of your contribution (what you added, improved, or fixed).
-
----
-
-## 🧰 Code Style Guidelines
-
-* Use **clear variable names** (`total_amount` instead of `x`).
-* Keep lines under **80 characters** where possible.
-* Include at least **2–3 inline comments** explaining major logic steps.
-* Use **functions** where appropriate to structure your code.
-* Follow the **Inputs → Storage → Processing → Output** comment format for all scripts.
-
----
-
-## ⚙️ Example Project Layout
-
-Here’s how your Python file should generally be structured:
-
-```python
-# ---------- INPUTS ----------
-# Get input data from the user
-# ---------- STORAGE ----------
-# Store constants, configuration, or global variables
-# ---------- PROCESSING ----------
-# Perform the main logic or computations
-# ---------- OUTPUT ----------
-# Display the result clearly
-```
-
----
-
-## ✅ Before Submitting
-
-✔ Test your code locally or via Binder
-✔ Confirm your script runs without syntax errors
-✔ Ensure you didn’t overwrite existing files unintentionally
-✔ Follow naming conventions (e.g., `snake_case` for file names)
-
----
-
-## 👩‍🏫 Maintainer
-
-**Dr. Isaac Kofi Nti**
-Assistant Professor, School of Information Technology
-University of Cincinnati
-
-📧 [ntious@ucmail.uc.edu](mailto:ntious1@gmail.com)
-🌐 [Google Scholar]([https://researchdirectory.uc.edu/p/ntious](https://scholar.google.com/citations?user=eMCHVxcAAAAJ&hl=en))
-
----
-
-## 📝 License
-
-All contributions are licensed for **educational and non-commercial use**.
-By submitting a pull request, you agree that your contribution may be used for instructional or student learning purposes.
-
----
-
+The repository's [MIT License](LICENSE) is the applicable license. The
+educational setting describes the intended use of these materials; it is not an
+additional non-commercial restriction. By submitting a contribution, you agree
+that it may be distributed under the same MIT License.

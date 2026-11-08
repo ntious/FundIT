@@ -27,7 +27,7 @@ class Page(HTMLParser):
 
 
 def check():
-    pages = {p.resolve(): Page(p.read_text()) for p in OUTPUT.rglob('*.html')
+    pages = {p.resolve(): Page(p.read_text(encoding='utf-8')) for p in OUTPUT.rglob('*.html')
              if p.name != 'spoilguard.html'}  # The prototype is published as-is.
     errors = []
     count = 0
@@ -57,11 +57,31 @@ def check():
         relative = source.relative_to(ROOT)
         assert (OUTPUT / relative).read_bytes() == source.read_bytes(), f'Changed download: {relative}'
         if source.suffix in ('.py', '.sql'):
-            rendered = (TOOLS / '.site-build/source' / relative.with_suffix('.md')).read_text()
-            assert source.read_text().rstrip() in rendered, f'Changed code: {relative}'
-    search = json.loads((OUTPUT / 'search/search_index.json').read_text())
+            rendered = (TOOLS / '.site-build/source' / relative.with_suffix('.md')).read_text(encoding='utf-8')
+            assert source.read_text(encoding='utf-8').rstrip() in rendered, f'Changed code: {relative}'
+    search = json.loads((OUTPUT / 'search/search_index.json').read_text(encoding='utf-8'))
     for script in ROOT.glob('Beyond_Calculator_Projects/*.py'):
         assert any(script.stem in entry['location'] for entry in search['docs']), script
+    overview = pages[(OUTPUT / 'repository/index.html').resolve()]
+    overview_targets = {
+        (OUTPUT / 'Simple_Calculator_Lab/index.html').resolve(),
+        (OUTPUT / 'Database_basic_SQL_lite/index.html').resolve(),
+        (OUTPUT / 'Database_basics_postgress/index.html').resolve(),
+        (OUTPUT / 'final_project/index.html').resolve(),
+        (OUTPUT / 'LICENSE/index.html').resolve(),
+    }
+    linked_targets = set()
+    for link in overview.links:
+        url = urlsplit(link)
+        if url.scheme or url.netloc:
+            continue
+        target = (OUTPUT / 'repository' / unquote(url.path)).resolve()
+        if target.is_dir():
+            target = target / 'index.html'
+        linked_targets.add(target)
+    assert overview_targets <= linked_targets, (
+        f'Repository overview is missing links: {overview_targets - linked_targets}'
+    )
     assert not errors, '\n'.join(errors)
     print(f'PASS: {len(pages)} pages, {count} local links/anchors, {len(downloads)} unchanged downloads, '
           'all projects searchable.')

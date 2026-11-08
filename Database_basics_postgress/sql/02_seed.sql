@@ -19,4 +19,10 @@ SELECT s.student_id, c.course_id
 FROM students s CROSS JOIN LATERAL (
   SELECT course_id FROM courses WHERE course_code IN ('IT1050','IT2023')
 ) c
+WHERE NOT EXISTS (
+  SELECT 1
+  FROM enrollments e
+  WHERE e.student_id = s.student_id
+    AND e.course_id = c.course_id
+)
 ON CONFLICT DO NOTHING;

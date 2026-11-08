@@ -52,9 +52,17 @@ def rewrite_links(text, page):
         if '@' in target and '/' not in target:
             return f'[{label}](mailto:{target})'
         path, _, anchor = target.partition('#')
+        original_path = path
+        if path == 'LICENSE' or path.endswith('/LICENSE'):
+            path += '.md'
+        elif path == 'README.md':
+            path = 'index.md'
+        elif path.endswith('/README.md'):
+            path = path[:-len('README.md')] + 'index.md'
         if path.endswith('.py'):
             path = path[:-3] + '.md'
-        if not (SOURCE / page.parent / path).resolve().exists() and not (ROOT / page.parent / path).exists():
+        if (not (SOURCE / page.parent / path).resolve().exists()
+                and not (ROOT / page.parent / original_path).resolve().exists()):
             return label  # e.g. placeholder screenshots in a student template
         return f'[{label}]({path}{"#" + anchor if anchor else ""})'
     # Repair links written as [text]([label](url)) so they point at the inner URL.
@@ -119,8 +127,9 @@ def notebook_page(relative):
     chunks.insert(1, buttons(('Run in Binder', BINDER + relative), ('Open in Colab', COLAB + relative),
                              ('Download notebook', path.name)) + '\n\n'
                   '!!! tip "Read here. Practice in a notebook."\n'
-                  '    This page shows the original notebook without outputs. Open it in Binder or Colab and '
-                  'run the cells from top to bottom; the first code cell installs what the lab needs. '
+                  '    This page shows the original notebook without outputs. Binder installs the dependencies '
+                  'when it starts. In Colab, first run `%pip install ipython-sql==0.5.0 SQLAlchemy==2.0.36` '
+                  'in a new code cell. Then run the notebook cells from top to bottom. '
                   'Download your work before leaving, because sessions are temporary.\n\n'
                   f'[View original source]({REPO}/blob/main/{relative})')
     return '\n\n'.join(chunks) + '\n'
@@ -218,7 +227,7 @@ def build():
     home = (TOOLS / 'website/home.md').read_text(encoding='utf-8').replace('<!-- PROJECTS -->', '\n\n'.join(cards))
     write('index.md', home)
 
-    config = yaml.safe_load((TOOLS / 'mkdocs.yml').read_text())
+    config = yaml.safe_load((TOOLS / 'mkdocs.yml').read_text(encoding='utf-8'))
     config['nav'] = [
         {'Welcome': 'index.md'},
         {'Python labs': [
@@ -246,7 +255,9 @@ def build():
     # Absolute paths keep the generated config independent of its own location.
     config['docs_dir'] = str(SOURCE)
     config['site_dir'] = str(TOOLS / '.site-build/output')
-    (TOOLS / '.site-build/mkdocs.yml').write_text(yaml.safe_dump(config, sort_keys=False, allow_unicode=True))
+    (TOOLS / '.site-build/mkdocs.yml').write_text(
+        yaml.safe_dump(config, sort_keys=False, allow_unicode=True), encoding='utf-8'
+    )
     print(f'Prepared {len(PROJECTS) + 1} Python pages, {len(SQL_LABS) + len(SQL_SETUP)} SQL pages and 1 notebook; '
           'originals unchanged.')
 
